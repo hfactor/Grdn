@@ -1,0 +1,8 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
+
+{{ $style := resources.Get "css/main.css" | resources.Minify }}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}">
+
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>

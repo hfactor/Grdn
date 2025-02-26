@@ -1,0 +1,9 @@
+{{ $content := . }}
+{{ $content = replaceRE `^---[\s\S]*?---` "" $content }}
+{{ $content = replaceRE `^#\s.*$` "" $content }}
+{{ $content = replaceRE `\[\[(.*?)\]\]` "$1" $content }}
+{{ $content = replaceRE `[#*\-\d.]+ ` "" $content }}
+{{ $content = replaceRE `\n+` " " $content }}
+{{ $content = strings.TrimSpace $content }}
+{{ $content = truncate 150 $content "..." }}
+{{ return $content }} 

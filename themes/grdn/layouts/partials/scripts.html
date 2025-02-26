@@ -1,0 +1,8 @@
+{{ $main := resources.Get "js/main.js" | resources.Minify }}
+<script src="{{ $main.RelPermalink }}"></script>
+
+{{ $search := resources.Get "js/search.js" | resources.Minify }}
+<script src="{{ $search.RelPermalink }}"></script>
+
+{{ $theme := resources.Get "js/theme-toggle.js" | resources.Minify }}
+<script src="{{ $theme.RelPermalink }}"></script> 

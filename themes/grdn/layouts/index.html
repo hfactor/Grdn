@@ -1,0 +1,12 @@
+{{ define "main" }}
+<div class="home-container">
+  {{ if .Content }}
+    <div class="home-content">
+      {{ .Content }}
+    </div>
+  {{ end }}
+  
+  {{ partial "filter-bar.html" . }}
+  {{ partial "notes-list.html" . }}
+</div>
+{{ end }}

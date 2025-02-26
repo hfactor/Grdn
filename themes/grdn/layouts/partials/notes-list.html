@@ -1,0 +1,14 @@
+<div class="notes-list">
+  {{ range where .Site.RegularPages "Section" "notes" }}
+    <div class="note-item" data-category="{{ .Params.category }}" data-growth="{{ .Params.growth }}">
+      <div class="note-title">
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      </div>
+      {{ if .Params.category }}
+        <div class="note-meta">
+          <span class="category">{{ .Params.category }}</span>
+        </div>
+      {{ end }}
+    </div>
+  {{ end }}
+</div> 

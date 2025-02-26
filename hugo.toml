@@ -1,0 +1,57 @@
+# Basic Configuration
+baseURL = 'http://example.org/'
+languageCode = 'en-us'
+title = 'My Digital Garden'
+theme = 'grdn'
+
+# Site Parameters
+[params]
+  notesPath = "notes"  # Base path for all notes
+
+  # Filter Settings
+  [params.filters]
+    enableSearch = true      # Enable title search
+    enableCategory = true    # Enable category filter
+    enableGrowth = true     # Enable growth stage filter
+    showCategoryCount = true    # Show note count in category filter
+    showGrowthCount = false     # Show note count in growth stage filter
+    
+  # Theme Settings  
+  [params.theme]
+    defaultDark = false     # Start in light mode
+    persistChoice = true    # Remember user's theme choice
+
+  # Wikilink Settings
+  [params.wikilinks]
+    brokenLinkTooltip = "Page not found"  # Message for broken links
+    matchFilename = true    # Match by filename instead of title
+    enableAliases = true    # Enable alias matching
+
+  # Footer Configuration
+  [params.footer]
+    enabled = true
+    text = "Built with Hugo using the GRDN theme"
+    links = [
+      { name = "Twitter", url = "https://twitter.com/username" },
+      { name = "GitHub", url = "https://github.com/username" }
+    ]
+
+# Hugo Settings
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.goldmark.parser]
+    wrapStandAloneImageWithinParagraph = false
+  [markup.goldmark.parser.attribute]
+    block = true
+    title = true
+  [markup.links]
+    resolveRelative = true
+
+[outputs]
+  home = ["HTML", "JSON"]  # JSON needed for search
+
+[taxonomies]
+
+[permalinks]
+  notes = "/note/:filename/"

@@ -1,0 +1,16 @@
+{{ define "main" }}
+<div class="notes-container">
+  <div class="notes-header">
+    <h1>{{ .Title }}</h1>
+    {{ .Content }}
+  </div>
+
+  <div class="notes-filters">
+    {{ partial "filter-bar.html" . }}
+  </div>
+
+  <div class="notes-content">
+    {{ partial "notes-list.html" . }}
+  </div>
+</div>
+{{ end }}

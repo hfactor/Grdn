@@ -1,0 +1,13 @@
+{
+  "pages": [
+    {{ range $index, $page := where .Site.RegularPages "Section" "notes" }}
+    {{ if $index }},{{ end }}
+    {
+      "title": {{ $page.Title | jsonify }},
+      "permalink": {{ $page.Permalink | jsonify }},
+      "category": {{ $page.Params.category | jsonify }},
+      "growth": {{ $page.Params.growth | jsonify }}
+    }
+    {{ end }}
+  ]
+} 

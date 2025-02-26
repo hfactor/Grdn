@@ -1,0 +1,48 @@
+<div class="backlinks">
+  <div class="backlinks-header">
+    <h3>Backlinks</h3>
+  </div>
+  {{ $currentPage := . }}
+  {{ $backlinks := slice }}
+  
+  {{ range where .Site.RegularPages "Section" "notes" }}
+    {{ $page := . }}
+    {{ $content := .RawContent }}
+    {{ $wikilinks := findRE `\[\[(.*?)\]\]` $content -1 }}
+    {{ $foundInThisPage := false }}
+    
+    {{ range $wikilinks }}
+      {{ $link := . }}
+      {{ $target := strings.TrimPrefix "[[" (strings.TrimSuffix "]]" $link) }}
+      {{ $target = strings.TrimSpace $target }}
+      
+      {{ if strings.Contains $target "|" }}
+        {{ $parts := split $target "|" }}
+        {{ $target = strings.TrimSpace (index $parts 0) }}
+      {{ end }}
+      
+      {{ if and (eq (lower $target) (lower $currentPage.File.BaseFileName)) (not $foundInThisPage) }}
+        {{ $backlinks = $backlinks | append $page }}
+        {{ $foundInThisPage = true }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  
+  <div class="backlinks-content">
+    {{ if $backlinks }}
+      <ul class="backlinks-list">
+      {{ range $backlinks }}
+        <div class="backlink-item">
+          <li>
+            <a href="{{ .RelPermalink }}" class="wikilink">{{ .Title }}</a>
+          </li>
+        </div>
+      {{ end }}
+      </ul>
+    {{ else }}
+      <div class="backlinks-empty">
+        <p>No backlinks found</p>
+      </div>
+    {{ end }}
+  </div>
+</div> 
