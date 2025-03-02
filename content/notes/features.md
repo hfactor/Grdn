@@ -5,10 +5,10 @@ category: "Documentation"
 growth: "Evergreen"
 ---
 
-Let's explore the features that make Grdn special for publishing Obsidian notes.
+Explore the features that make Grdn special for publishing Obsidian notes.
 
 ## 1. Wikilink Support
-- Uses standard Obsidian `[[wikilinks]]` syntax
+- Uses standard Obsidian wikilinks syntax
 - Supports aliases through frontmatter
 - Shows broken link indicators
 - Displays backlinks at the bottom of each note
@@ -31,5 +31,3 @@ The filter bar at the top provides:
 
 ## Configuration
 All features can be configured in `hugo.toml`. See [[formatting]] for markdown examples.
-
-Related: [[welcome]] | [[digital-garden]] 

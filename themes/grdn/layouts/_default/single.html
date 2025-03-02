@@ -1,16 +1,26 @@
 {{ define "main" }}
 <div class="note-container">
   <article class="note-content">
-    <h1>{{ .Title }}</h1>
-    
-    <div class="note-metadata">
-      {{ if .Params.category }}
-      <div class="metadata">
-        <span class="category">{{ .Params.category }}</span>
-        {{ if .Params.growth }}
-        <span class="growth">{{ .Params.growth }}</span>
-        {{ end }}
+    <div class="note-header">
+      <h1>{{ .Title }}</h1>
+      {{ if .Date }}
+      <div class="note-date">
+        {{ .Date.Format "January 2, 2006" }}
       </div>
+      {{ end }}
+    </div>
+    
+    <div class="metadata-chips">
+      {{ if .Params.category }}
+      <span class="metadata-chip">
+        {{ .Params.category }}
+      </span>
+      {{ end }}
+      
+      {{ if .Params.growth }}
+      <span class="metadata-chip">
+        {{ .Params.growth }}
+      </span>
       {{ end }}
     </div>
 
