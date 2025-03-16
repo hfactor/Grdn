@@ -1,4 +1,4 @@
-# GRDN Theme for Hugo
+# Grdn Theme for Hugo
 
 A minimal, modern Hugo theme optimized for digital gardens and Obsidian-compatible note management.
 

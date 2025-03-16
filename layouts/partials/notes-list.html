@@ -1,5 +1,5 @@
 <div class="notes-list">
-  {{ range where .Site.RegularPages "Section" "notes" }}
+  {{ range (where .Site.RegularPages "Section" "notes").ByDate.Reverse }}
     <div class="note-item" data-category="{{ .Params.category }}" data-growth="{{ .Params.growth }}">
       <div class="note-title">
         <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
@@ -11,4 +11,4 @@
       {{ end }}
     </div>
   {{ end }}
-</div> 
+</div>

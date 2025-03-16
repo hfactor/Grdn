@@ -2,7 +2,7 @@
 baseURL = 'http://example.org/'
 languageCode = 'en-us'
 title = 'My Digital Garden'
-theme = 'grdn'
+theme = 'Grdn'
 
 # Site Parameters
 [params]
@@ -30,11 +30,7 @@ theme = 'grdn'
   # Footer Configuration
   [params.footer]
     enabled = true
-    text = "Built with Hugo using the GRDN theme"
-    links = [
-      { name = "Twitter", url = "https://twitter.com/username" },
-      { name = "GitHub", url = "https://github.com/username" }
-    ]
+    text = "Built with Hugo using the Grdn theme"
 
 # Hugo Settings
 [markup]

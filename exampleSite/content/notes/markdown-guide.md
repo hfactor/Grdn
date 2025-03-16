@@ -1,12 +1,13 @@
 ---
 title: "Markdown Guide"
-date: 2024-03-21
+date: 2025-03-02
 category: "Documentation"
-growth: "Evergreen"
+growth: "evergreen"
+aliases:
+  - "Markdown"
+  - "Markdown Rendering"
 ---
 
-This is intended as a quick reference and showcase. 
-Copied from [Simply Jekyll](https://github.com/raghudotcc/simply-jekyll/blob/master/_posts/2020-01-01-test.md).
 
 ### Headings 
 ```
@@ -316,3 +317,7 @@ This line is separated from the one above by two newlines, so it will be a *sepa
 
 This line is also a separate paragraph, but...
 This line is only separated by a single newline, so it's a separate line in the *same paragraph*.
+
+
+This is intended as a quick reference and showcase. 
+Copied from [Simply Jekyll](https://github.com/raghudotcc/simply-jekyll/blob/master/_posts/2020-01-01-test.md).

@@ -58,17 +58,29 @@
           {{ if eq (lower $filename) (lower $normalizedTarget) }}
             {{ $found = true }}
             {{ $matchedPage = . }}
+            <!-- Break the loop once we find a filename match -->
+            {{ break }}
           {{ end }}
         {{ end }}
         
-        <!-- Then try alias match -->
+        <!-- Only try alias match if no filename match was found -->
         {{ if not $found }}
           {{ range where $.Site.RegularPages "Section" "notes" }}
-            {{ with .Params.aliases }}
-              {{ range . }}
-                {{ if eq (lower (trim . " ")) (lower $target) }}
-                  {{ $found = true }}
-                  {{ $matchedPage = $.Page }}
+            <!-- Skip checking aliases if there's already a file with this name -->
+            {{ $fileExists := false }}
+            {{ range where $.Site.RegularPages "Section" "notes" }}
+              {{ if eq (lower .File.BaseFileName) (lower $target) }}
+                {{ $fileExists = true }}
+              {{ end }}
+            {{ end }}
+            
+            {{ if not $fileExists }}
+              {{ with .Params.aliases }}
+                {{ range . }}
+                  {{ if eq (lower (trim . " ")) (lower $target) }}
+                    {{ $found = true }}
+                    {{ $matchedPage = $.Page }}
+                  {{ end }}
                 {{ end }}
               {{ end }}
             {{ end }}

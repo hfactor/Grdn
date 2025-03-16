@@ -153,6 +153,7 @@ header nav {
 
 .header-left:hover {
   color: var(--t-accent);
+  text-decoration: none;
 }
 
 .site-title {
@@ -186,6 +187,7 @@ header nav {
   position: relative;
   max-width: var(--container-width);
   margin: 0 auto;
+  margin-top: var(--space-lg);
 }
 
 .filter-toggle {
@@ -466,7 +468,7 @@ code {
   font-family: var(--text-mono);
   font-size: var(--t-font-small);
   background: var(--t-background-alt);
-  padding: var(--space-2xs);
+  padding: var(--space-3xs);
   border-radius: var(--radius);
 }
 
@@ -724,4 +726,32 @@ html {
   padding: var(--space-2xs);
   border-radius: var(--radius);
   border: var(--border-width) solid var(--border);
+}
+
+/* Backlinks Grid Layout */
+.backlinks-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.backlink-item {
+  flex: 0 0 calc(50% - 0.5rem); /* Two columns with gap consideration */
+  box-sizing: border-box;
+}
+
+/* Make it responsive - switch to single column on small screens */
+@media (max-width: 640px) {
+  .backlink-item {
+    flex: 0 0 100%;
+  }
+}
+
+/* Optional styling for links */
+.backlink-item a {
+  display: block;
+  padding: 0.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  background-color: rgba(0, 0, 0, 0.05);
 }

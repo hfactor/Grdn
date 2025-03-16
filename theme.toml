@@ -1,0 +1,12 @@
+name = "Grdn"
+license = "MIT"
+licenselink = "https://github.com/hfactor/Grdn/blob/master/LICENSE"
+description = "A minimal, modern Hugo theme for digital gardens. Obsidian compatible."
+homepage = "https://github.com/hfactor/Grdn"
+tags = ["responsive", "minimal", "clean", "modern", "digital-garden", "obsidian", "wikilinks", "backlinks", "dark-mode"]
+features = ["search", "wikilinks", "dark-mode"]
+min_version = "0.112.0"
+
+[author]
+  name = "Hiran Venugopalan"
+  homepage = "https://hiran.in"
