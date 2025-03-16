@@ -1,3 +1,5 @@
+![hugo-grdn-screenshot](https://github.com/user-attachments/assets/3848fa9b-0846-4dab-8fd5-ddf000b465b3)
+
 # Grdn - A Hugo Theme for Digital Gardens
 
 Grdn is a clean, minimal Hugo theme specifically designed for publishing your [Obsidian](https://obsidian.md/) notes as a beautiful digital garden. It maintains the integrity of your note connections while presenting them in a web-friendly format.
