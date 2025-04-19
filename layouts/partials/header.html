@@ -1,4 +1,4 @@
-<header{{ if .Site.Params.header.fixed }} class="header-fixed"{{ end }}>
+<header class="site-header{{ if .Site.Params.header.fixed }} fixed{{ end }}">
   <nav class="container">
     <a href="/" class="header-left">
       {{ if .Site.Params.header.showLogo }}
@@ -14,14 +14,10 @@
         <span class="site-title">{{ .Site.Title }}</span>
       {{ end }}
     </a>
-    <button id="theme-toggle" aria-label="Toggle theme">
-      <svg class="sun-icon" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="var(--border-width)">
-        <circle cx="12" cy="12" r="4"/>
-        <path d="M12 2V4M12 20V22M2 12H4M20 12H22M4.93 4.93L6.34 6.34M17.66 17.66L19.07 19.07M4.93 19.07L6.34 17.66M17.66 6.34L19.07 4.93" stroke-linecap="round"/>
-      </svg>
-      <svg class="moon-icon" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="var(--border-width)">
-        <path d="M12 3C10.8134 4.19001 10.0507 5.77167 10.0507 7.46667C10.0507 10.8533 12.8134 13.6 16.224 13.6C17.928 13.6 19.5187 12.8427 20.712 11.6667C20.712 11.6667 20.712 11.6667 20.712 11.6667C20.712 17.3067 16.128 21.8667 10.456 21.8667C4.784 21.8667 0.200012 17.3067 0.200012 11.6667C0.200012 6.02667 4.784 1.46667 10.456 1.46667C11.0027 1.46667 11.5067 1.52 12 1.6" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
+    {{ if and .Site.Params.theme.enabled .Site.Params.theme.showToggle }}
+      {{ if eq .Site.Params.theme.position "header" }}
+        {{ partial "features/theme-toggle.html" (dict "position" "header") }}
+      {{ end }}
+    {{ end }}
   </nav>
 </header>

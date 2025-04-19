@@ -33,18 +33,28 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
     
-    // Update URL parameters
-    const params = new URLSearchParams(window.location.search);
-    [
-      ['search', searchTerm],
-      ['category', selectedCategory],
-      ['growth', selectedGrowth]
-    ].forEach(([key, value]) => {
-      if (value) params.set(key, value);
-      else params.delete(key);
-    });
-    
-    history.replaceState(null, '', `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`);
+    // Update URL parameters only if enabled
+    if (siteConfig.filters?.persistState) {
+      const params = new URLSearchParams(window.location.search);
+      const prefix = siteConfig.filters?.paramPrefix || '';
+      
+      [
+        ['search', searchTerm],
+        ['category', selectedCategory],
+        ['growth', selectedGrowth]
+      ].forEach(([key, value]) => {
+        const paramKey = prefix + key;
+        if (value) params.set(paramKey, value);
+        else params.delete(paramKey);
+      });
+      
+      const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+      if (siteConfig.filters?.updateHistory) {
+        history.replaceState(null, '', newUrl);
+      } else {
+        window.location.hash = params.toString();
+      }
+    }
   }
   
   // Add event listeners with debouncing
@@ -73,8 +83,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
-  // Initialize from URL parameters
-  const params = new URLSearchParams(window.location.search);
-  if (params.has('search') && searchInput) searchInput.value = params.get('search');
-  updateResults();
+  // Initialize from URL parameters if enabled
+  if (siteConfig.filters?.persistState) {
+    const params = new URLSearchParams(window.location.search);
+    const prefix = siteConfig.filters?.paramPrefix || '';
+    
+    if (params.has(prefix + 'search') && searchInput) {
+      searchInput.value = params.get(prefix + 'search');
+    }
+    // ... initialize other filters from URL ...
+  }
 }); 

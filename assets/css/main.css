@@ -167,24 +167,41 @@ header nav {
   padding-top: 4px;
 }
 
-#theme-toggle {
+/* Theme Toggle Styles */
+.theme-toggle {
   background: transparent;
   border: none;
-  padding: 0.5rem;
+  padding: 0;
   cursor: pointer;
-  color: var(--t-foreground);
+  color: var(--t-background);  /* Show background color in light mode */
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#theme-toggle:hover {
-  color: var(--t-accent);
+/* Circle Color Switching - Show opposite colors */
+[data-theme="dark"] .theme-toggle {
+  color: var(--t-foreground);  /* Show foreground color (light) in dark mode */
 }
 
-[data-theme="dark"] .sun-icon,
-[data-theme="light"] .moon-icon {
-  display: none;
+[data-theme="light"] .theme-toggle {
+  color: var(--t-foreground);  /* Show foreground color (dark) in light mode */
+}
+
+/* Hover Animation */
+.theme-toggle:hover {
+  transform: scale(1.2) rotate(180deg);
+}
+
+/* Position-specific styles */
+.theme-toggle-header {
+  margin-left: var(--space-sm);
+}
+
+.theme-toggle-footer {
+  margin: 0;
+  padding: 0;
 }
 
 /* Filter Bar */
@@ -652,10 +669,16 @@ footer nav {
   color: var(--t-accent);
 }
 
+.footer-right p {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+/* Responsive adjustments */
 @media (max-width: 640px) {
-  footer nav {
-    flex-direction: column;
-    align-items: flex-start;
+  .footer-right p {
+    justify-content: flex-start;
   }
 }
 
@@ -692,7 +715,7 @@ img.site-logo {
 
 /* Button hover effects */
 .filter-toggle:hover,
-#theme-toggle:hover {
+.theme-toggle:hover {
   transform: scale(1.02);
   transition: transform 0.2s ease;
 }

@@ -27,10 +27,18 @@ theme = 'Grdn'
     # Real-time Filter Settings
     debounceTime = 150      # Milliseconds to wait before updating results
     
+    # URL State Settings
+    persistState = true     # Enable/disable filter state in URL
+    updateHistory = true    # Update browser history with filter changes
+    paramPrefix = "filter_" # Prefix for URL parameters (optional)
+
   # Theme Settings  
   [params.theme]
-    defaultDark = false     # Start in light mode
-    persistChoice = true    # Remember user's theme choice
+    enabled = true           # Controls if theme toggle feature is enabled
+    defaultDark = false     # Sets initial theme
+    persistChoice = true    # Saves user's theme preference
+    showToggle = true      # Controls visibility of toggle button
+    position = "header"     # Position of toggle: "header" or "footer"
 
   # Wikilink Settings
   [params.wikilinks]

@@ -8,7 +8,14 @@
     </div>
     <div class="footer-right">
       {{ with .Site.Params.footer.rightText }}
-        <p>{{ . | safeHTML }}</p>
+        <p>
+          {{ . | safeHTML }}
+          {{ if and $.Site.Params.theme.enabled $.Site.Params.theme.showToggle }}
+            {{ if eq $.Site.Params.theme.position "footer" }}
+              {{ partial "features/theme-toggle.html" (dict "position" "footer") }}
+            {{ end }}
+          {{ end }}
+        </p>
       {{ end }}
     </div>
   </nav>
