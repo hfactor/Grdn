@@ -4,6 +4,7 @@
     {{ if $index }},{{ end }}
     {
       "title": {{ $page.Title | jsonify }},
+      "localTitle": {{ $page.Params.localTitle | jsonify }},
       "permalink": {{ $page.Permalink | jsonify }},
       "category": {{ $page.Params.category | jsonify }},
       "growth": {{ $page.Params.growth | jsonify }}

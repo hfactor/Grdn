@@ -88,6 +88,10 @@ theme = 'Grdn'
     favorite = { icon = "✦", tooltip = "Favorite" }
     reread = { icon = "❷", tooltip = "Re-Read" }
 
+  # Local Title Settings
+  [params.localTitle]
+    enabled = true           # Enable/disable local language titles
+
 # Hugo Settings
 [markup]
   [markup.goldmark.renderer]

@@ -1,8 +1,7 @@
 {{ define "main" }}
-<div style="color: green">USING LIST.HTML TEMPLATE</div>
 <div class="notes-container">
   <div class="notes-header">
-    <h1>{{ .Title }}</h1>
+    <h1>{{ partial "display-title.html" . }}</h1>
     {{ .Content }}
   </div>
 
@@ -11,39 +10,7 @@
   </div>
 
   <div class="notes-content">
-    <div class="note-list">
-      {{ range .Pages }}
-        <div class="note-item" data-category="{{ .Params.category }}" data-growth="{{ .Params.growth }}">
-          <!-- Test 1: Show all params -->
-          <div style="color: red">
-            PARAMS: {{ range $key, $value := .Params }}
-              {{ $key }}: {{ $value }},
-            {{ end }}
-          </div>
-
-          <div class="note-title">
-            <h3>
-              <a href="{{ .RelPermalink }}">
-                <!-- Test 2: Direct favorite check -->
-                <div style="color: blue">
-                  IS FAVORITE: {{ .Params.favorite }}
-                </div>
-                
-                {{ if .Params.favorite }}
-                  <span class="status-indicator" title="Favorite">★</span>
-                {{ end }}
-                {{ .Title }}
-              </a>
-            </h3>
-          </div>
-          {{ if .Params.category }}
-            <div class="note-meta">
-              <span class="category">{{ .Params.category }}</span>
-            </div>
-          {{ end }}
-        </div>
-      {{ end }}
-    </div>
+    {{ partial "notes-list.html" . }}
   </div>
 </div>
 {{ end }}
