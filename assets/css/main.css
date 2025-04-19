@@ -927,3 +927,28 @@ h1 a, h3 a {
   display: inline-flex;
   align-items: center;
 }
+
+/* External Link Styles */
+.external-link-indicator {
+  display: inline-block;
+  margin-left: var(--space-3xs);
+  font-size: 0.8em;
+}
+
+.external-button {
+  margin-top: var(--space-sm);
+}
+
+.external-button a {
+  display: inline-flex;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.2rem;
+  color: var(--t-background);
+  background: linear-gradient(to right, var(--t-foreground), var(--t-foreground-alt));
+  font-weight: var(--t-weight-regular);
+  font-size: var(--t-font-small);
+  text-align: center;
+  align-items: center;
+  gap: var(--space-sm);
+  text-decoration: none;
+}

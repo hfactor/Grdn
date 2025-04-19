@@ -1,5 +1,12 @@
-{{ if and .Site.Params.localTitle.enabled .Params.localTitle }}
-  {{ .Params.localTitle }}
+{{ if and .Site.Params.externalLinks.enabled .Params.externalLink }}
+  {{ if not .Site.Params.externalLinks.directExternal }}
+    {{ if .Params.localTitle }}{{ .Params.localTitle }}{{ else }}{{ .Title }}{{ end }}
+  {{ else }}
+    <a href="{{ .Params.externalLink }}" {{ if .Site.Params.externalLinks.openInNewTab }}target="_blank" rel="noopener"{{ end }}>
+      {{ if .Params.localTitle }}{{ .Params.localTitle }}{{ else }}{{ .Title }}{{ end }}
+      {{ if .Site.Params.externalLinks.indicator }}<span class="external-link-indicator">{{ .Site.Params.externalLinks.indicator }}</span>{{ end }}
+    </a>
+  {{ end }}
 {{ else }}
-  {{ .Title }}
+  {{ if .Params.localTitle }}{{ .Params.localTitle }}{{ else }}{{ .Title }}{{ end }}
 {{ end }} 

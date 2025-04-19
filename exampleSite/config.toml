@@ -92,6 +92,14 @@ theme = 'Grdn'
   [params.localTitle]
     enabled = true           # Enable/disable local language titles
 
+  # External Links Settings
+  [params.externalLinks]
+    enabled = true               # Enable external links feature
+    directExternal = false      # true = direct link
+    buttonText = "See More"     # Text for the button
+    indicator = "↗"             # Icon to show next to external links
+    openInNewTab = true         # Open external links in new tab
+
 # Hugo Settings
 [markup]
   [markup.goldmark.renderer]

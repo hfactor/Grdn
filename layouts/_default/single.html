@@ -17,6 +17,15 @@
         {{ partial "display-title.html" . }}
       </h1>
       
+      {{ if and .Site.Params.externalLinks.enabled .Params.externalLink (not .Site.Params.externalLinks.directExternal) }}
+        <div class="external-button">
+          <a href="{{ .Params.externalLink }}" {{ if .Site.Params.externalLinks.openInNewTab }}target="_blank" rel="noopener"{{ end }}>
+            {{ .Site.Params.externalLinks.buttonText }}
+            {{ if .Site.Params.externalLinks.indicator }}<span class="external-link-indicator">{{ .Site.Params.externalLinks.indicator }}</span>{{ end }}
+          </a>
+        </div>
+      {{ end }}
+      
       {{ if .Date }}
       <div class="note-date">
         {{ .Date.Format "January 2, 2006" }}
