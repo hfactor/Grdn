@@ -95,7 +95,7 @@ theme = 'Grdn'
   # External Links Settings
   [params.externalLinks]
     enabled = true               # Enable external links feature
-    directExternal = false      # true = direct link
+    directExternal = true      # true = direct link
     buttonText = "See More"     # Text for the button
     indicator = "↗"             # Icon to show next to external links
     openInNewTab = true         # Open external links in new tab
@@ -106,6 +106,11 @@ theme = 'Grdn'
     delay = 300             # Milliseconds before preview appears
     showMetadata = true     # Show date/category in preview
     excerptLength = 150     # Characters to show in preview
+
+  [params.viewToggle]
+  enabled = true           # Enable view toggle feature
+  defaultView = "grid"     # Default view mode ("list" or "grid")
+  persistChoice = true     # Remember user's choice across sessions
 
 # Hugo Settings
 [markup]

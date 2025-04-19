@@ -9,16 +9,22 @@
   </button>
 
   <div class="filter-bar">
-    {{ if .Site.Params.filters.enableSearch }}
-      {{ partial "features/search.html" . }}
-    {{ end }}
-    
-    {{ if .Site.Params.filters.enableCategory }}
-      {{ partial "features/category-filter.html" . }}
-    {{ end }}
-    
-    {{ if .Site.Params.filters.enableGrowth }}
-      {{ partial "features/growth-filter.html" . }}
+    <div class="filter-group">
+      {{ if .Site.Params.filters.enableSearch }}
+        {{ partial "features/search.html" . }}
+      {{ end }}
+      
+      {{ if .Site.Params.filters.enableCategory }}
+        {{ partial "features/category-filter.html" . }}
+      {{ end }}
+      
+      {{ if .Site.Params.filters.enableGrowth }}
+        {{ partial "features/growth-filter.html" . }}
+      {{ end }}
+    </div>
+
+    {{ if .Site.Params.viewToggle.enabled }}
+      {{ partial "features/view-toggle.html" . }}
     {{ end }}
   </div>
 </div>

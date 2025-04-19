@@ -1,0 +1,114 @@
+/* Filter bar layout */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 1;
+}
+
+/* View Toggle */
+.view-toggle {
+  display: flex;
+  gap: var(--space-2xs);
+  margin-left: var(--space-sm);
+}
+
+.view-toggle-btn {
+  padding: var(--space-2xs);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.view-toggle-btn.active {
+  background: var(--t-background-alt);
+  border-color: var(--t-accent);
+}
+
+/* List View */
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.notes-list .note-item {
+  margin-bottom: var(--space-md);
+}
+
+.notes-list .note-item h3 {
+  font-size: var(--t-font-size-lg);
+  font-family: var(--t-font-family);
+  margin-bottom: var(--space-xs);
+}
+
+.notes-list .note-meta {
+  font-size: var(--t-font-size-sm);
+  color: var(--t-foreground-alt);
+}
+
+/* Grid View */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-md);
+}
+
+.notes-grid .note-item {
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--t-background-alt);
+}
+
+.notes-grid .note-item h3 {
+  font-size: var(--t-font-size-md);
+  font-family: var(--t-font-family);
+  margin-bottom: var(--space-xs);
+}
+
+.notes-grid .note-meta {
+  font-size: var(--t-font-size-sm);
+  color: var(--t-foreground-alt);
+  margin-top: auto;
+}
+
+/* Hover effects */
+.note-item:hover {
+  border-color: var(--t-accent);
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group {
+    flex-direction: column;
+  }
+
+  .view-toggle {
+    margin-left: 0;
+    justify-content: flex-end;
+    margin-top: var(--space-sm);
+  }
+
+  .notes-grid {
+    grid-template-columns: 1fr;
+  }
+} 

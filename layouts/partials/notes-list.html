@@ -1,6 +1,5 @@
-<div class="notes-list">
+<div class="notes-list{{ if .Site.Params.viewToggle.enabled }} notes-container notes-{{ default "list" .Site.Params.viewToggle.defaultView }}{{ end }}">
   {{ range (where .Site.RegularPages "Section" "notes").ByDate.Reverse }}
-    {{ $currentPage := . }}
     <div class="note-item" data-category="{{ .Params.category }}" data-growth="{{ .Params.growth }}">
       <div class="note-title">
         <h3>
@@ -8,8 +7,8 @@
             {{ if .Site.Params.statusIndicators.enabled }}
               <span class="status-indicators" data-position="{{ default "prefix" .Site.Params.statusIndicators.position }}">
                 {{ range $key, $value := .Site.Params.statusIndicators.types }}
-                  {{ if (index $currentPage.Params $key) }}
-                    <span class="status-indicator" {{ if $currentPage.Site.Params.statusIndicators.showTooltip }}title="{{ $value.tooltip }}"{{ end }}>
+                  {{ if (index $.Params $key) }}
+                    <span class="status-indicator" {{ if $.Site.Params.statusIndicators.showTooltip }}title="{{ $value.tooltip }}"{{ end }}>
                       {{ $value.icon }}
                     </span>
                   {{ end }}
