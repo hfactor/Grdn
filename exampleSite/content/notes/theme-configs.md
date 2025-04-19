@@ -6,6 +6,7 @@ growth: "evergreen"
 aliases: 
   - "Configuration"
   - "Theme Configs"
+  
 ---
 
 Grdn offers various configuration options to customize your digital garden's appearance and functionality. These parameters to your site's `config.toml` file, are are set to a default value. Change them based on your preferences.

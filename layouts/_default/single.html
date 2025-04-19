@@ -10,6 +10,7 @@
       {{ end }}
     </div>
     
+    {{ if .Site.Params.status.showStatusChips }}
     <div class="metadata-chips">
       {{ if .Params.category }}
       <span class="metadata-chip">
@@ -23,6 +24,7 @@
       </span>
       {{ end }}
     </div>
+    {{ end }}
 
     <div class="content">
       {{ $content := .RawContent }}

@@ -744,8 +744,17 @@ html {
 
 .metadata-chips {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+}
+
+.metadata-chip {
+  font-size: var(--t-font-tiny);
+  color: var(--t-foreground-alt);
+  background: var(--t-background-alt);
+  padding: var(--space-2xs);
+  border-radius: var(--radius);
+  border: var(--border-width) solid var(--border);
 }
 
 .note-date {
@@ -770,21 +779,6 @@ html {
 .note-date {
   font-size: var(--t-font-small);
   color: var(--t-foreground-alt);
-}
-
-.metadata-chips {
-  display: flex;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-lg);
-}
-
-.metadata-chip {
-  font-size: var(--t-font-tiny);
-  color: var(--t-foreground-alt);
-  background: var(--t-background-alt);
-  padding: var(--space-2xs);
-  border-radius: var(--radius);
-  border: var(--border-width) solid var(--border);
 }
 
 /* Backlinks styles */

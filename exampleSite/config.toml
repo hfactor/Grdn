@@ -74,6 +74,10 @@ theme = 'Grdn'
     groupByCategory = false     # Group backlinks by category
     showEmpty = true           # Show message when no backlinks exist
 
+  # Status Indicator Settings
+  [params.status]
+    showStatusChips = true    # Enable/disable status indicators
+
 # Hugo Settings
 [markup]
   [markup.goldmark.renderer]
