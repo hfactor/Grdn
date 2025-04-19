@@ -11,6 +11,9 @@
       </main>
     </div>
     {{ partial "footer.html" . }}
+    {{ if site.Params.hoverPreviews.enabled }}
+      {{ partial "features/hover-preview.html" . }}
+    {{ end }}
     {{ partial "scripts.html" . }}
   </body>
 </html>

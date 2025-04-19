@@ -1,5 +1,10 @@
-{{ $main := resources.Get "js/main.js" | resources.Minify }}
-<script src="{{ $main.RelPermalink }}"></script>
+{{ $mainJs := resources.Get "js/main.js" | js.Build }}
+{{ $hoverJs := resources.Get "js/hover-preview.js" | js.Build }}
+
+{{ if site.Params.hoverPreviews.enabled }}
+<script src="{{ $hoverJs.RelPermalink }}"></script>
+{{ end }}
+<script src="{{ $mainJs.RelPermalink }}"></script>
 
 {{ $search := resources.Get "js/search.js" | resources.Minify }}
 <script src="{{ $search.RelPermalink }}"></script>

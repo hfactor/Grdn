@@ -66,10 +66,16 @@
   
   {{ $replacement := "" }}
   {{ if $found }}
-    {{ $replacement = printf `<a href="%s" class="wikilink" data-title="%s">%s</a>` 
+    {{ $plainContent := $matchedPage.Plain | htmlUnescape }}
+    {{ $noteData := dict 
+      "title" $matchedPage.Title
+      "excerpt" (substr $plainContent 0 150)
+    }}
+    
+    {{ $replacement = printf "<a href=\"%s\" data-note='%s'>%s</a>" 
       $matchedPage.RelPermalink 
-      $matchedPage.Title
-      $display
+      (jsonify $noteData)
+      $display 
     }}
   {{ else }}
     {{ $tooltipText := $page.Site.Params.wikilinks.brokenLinkTooltip | default "Page not found" }}

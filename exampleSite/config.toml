@@ -100,6 +100,13 @@ theme = 'Grdn'
     indicator = "↗"             # Icon to show next to external links
     openInNewTab = true         # Open external links in new tab
 
+  # Hover Previews Settings
+  [params.hoverPreviews]
+    enabled = true           # Enable hover previews
+    delay = 300             # Milliseconds before preview appears
+    showMetadata = true     # Show date/category in preview
+    excerptLength = 150     # Characters to show in preview
+
 # Hugo Settings
 [markup]
   [markup.goldmark.renderer]

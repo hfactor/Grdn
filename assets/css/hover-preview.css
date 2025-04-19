@@ -1,0 +1,55 @@
+.hover-preview {
+  position: absolute;
+  z-index: 1000;
+  display: none;
+  width: 300px;
+  background: var(--t-background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.hover-preview.visible {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.preview-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--t-foreground);
+}
+
+.preview-metadata {
+  font-size: 0.8rem;
+  color: var(--t-foreground-alt);
+  margin-bottom: 0.5rem;
+}
+
+.preview-metadata > span:not(:last-child):not(:empty)::after {
+  content: "•";
+  margin: 0 0.5rem;
+}
+
+.preview-excerpt {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--t-foreground);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* Broken link styling */
+.wikilink.broken {
+  color: var(--t-foreground-alt);
+  border-bottom: 1px dashed var(--t-foreground-alt);
+  cursor: help;
+} 
