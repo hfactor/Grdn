@@ -46,6 +46,15 @@ theme = 'Grdn'
     showLogo = true          # Show logo
     logoPath = ""            # Custom logo path (empty for default)
 
+  # Backlinks Configuration
+  [params.backlinks]
+    enabled = true
+    showContext = false           # Show text around the link
+    sortBy = "date"             # "date", "title", or "relevance"
+    maxDisplay = 10             # Number of backlinks to show before "Show More"
+    groupByCategory = false     # Group backlinks by category
+    showEmpty = true           # Show message when no backlinks exist
+
 # Hugo Settings
 [markup]
   [markup.goldmark.renderer]
