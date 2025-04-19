@@ -35,14 +35,16 @@ theme = 'Grdn'
 # Hugo Settings
 [markup]
   [markup.goldmark.renderer]
-    unsafe = true
+    unsafe = true  # Needed for footnote links and HTML
   [markup.goldmark.parser]
     wrapStandAloneImageWithinParagraph = false
-  [markup.goldmark.parser.attribute]
-    block = true
-    title = true
+    [markup.goldmark.parser.attribute]
+      block = true
+      title = true
   [markup.links]
     resolveRelative = true
+  [markup.footnote]
+    returnLinkContents = "↩"  # Symbol for back references
 
 [outputs]
   home = ["HTML", "JSON"]  # JSON needed for search
