@@ -50,6 +50,7 @@
     {{ end }}
 
     <div class="content">
+      {{ partial "content-header" . }}
       {{ $content := .RawContent }}
       {{ $wikilinksContext := dict "content" $content "page" . }}
       {{ $processedContent := partial "features/wikilinks.html" $wikilinksContext }}

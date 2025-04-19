@@ -1,0 +1,14 @@
+{{ if or .Params.cover .Params.external_url }}
+<div class="slot-small">
+  <div class="cover-wrapper">
+    {{ if .Params.cover }}
+    <div class="cover-image">
+      <img src="{{ .Params.cover }}" alt="{{ .Title }} Cover">
+    </div>
+    {{ end }}
+    {{ if .Params.external_url }}
+    <a href="{{ .Params.external_url }}" class="btn" target="_blank" rel="noopener">Check it Out</a>
+    {{ end }}
+  </div>
+</div>
+{{ end }} 

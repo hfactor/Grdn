@@ -46,11 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Show the preview
       previewEl.classList.add('visible');
-      
-      // Log for debugging
-      console.log('Showing preview:', { noteData, position: { top, left } });
     } catch (e) {
-      console.error('Error showing preview:', e);
+      // Silently handle errors without logging
     }
   }
 
@@ -67,9 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('mouseenter', () => {
       clearTimeout(showTimeout);
       showTimeout = setTimeout(() => showPreview(link), previewDelay);
-      
-      // Log for debugging
-      console.log('Mouse entered link:', link.textContent);
     });
 
     link.addEventListener('mouseleave', () => {
@@ -84,7 +78,4 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   previewEl.addEventListener('mouseleave', hidePreview);
-  
-  // Log for debugging
-  console.log('Hover preview initialized');
 }); 
