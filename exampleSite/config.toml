@@ -23,9 +23,14 @@ theme = 'Grdn'
 
   # Wikilink Settings
   [params.wikilinks]
+    enabled = true                # Enable/disable wikilink parsing
     brokenLinkTooltip = "Page not found"  # Message for broken links
-    matchFilename = true    # Match by filename instead of title
-    enableAliases = true    # Enable alias matching
+    matchFilename = true         # Match by filename instead of title
+    enableAliases = true         # Enable alias matching
+    titleMatch = false           # Enable title-based matching
+    specialCharHandling = true   # Handle special characters in links
+    caseInsensitive = true       # Case-insensitive matching
+    maxCacheSize = 1000         # Cache size for performance optimization
 
   # Footer Configuration
   [params.footer]

@@ -26,84 +26,9 @@
 
     <div class="content">
       {{ $content := .RawContent }}
-      {{ $wikilinks := findRE `\[\[(.*?)\]\]` $content -1 }}
-      
-      {{ range $wikilinks }}
-        {{ $original := . }}
-        {{ $inner := strings.TrimPrefix "[[" (strings.TrimSuffix "]]" $original) }}
-        
-        {{ $target := $inner }}
-        {{ $display := $inner }}
-        
-        {{ if strings.Contains $inner "|" }}
-          {{ $parts := split $inner "|" }}
-          {{ $target = trim (index $parts 0) " " }}
-          {{ $display = trim (index $parts 1) " " }}
-        {{ end }}
-        
-        {{ $found := false }}
-        {{ $matchedPage := "" }}
-        
-        <!-- Try filename match first -->
-        {{ range where $.Site.RegularPages "Section" "notes" }}
-          {{ $filename := .File.BaseFileName }}
-          {{ $normalizedTarget := $target }}
-          
-          <!-- Handle both space and hyphen variations -->
-          {{ $filename = replace $filename "-" " " }}
-          {{ if strings.Contains $target "-" }}
-            {{ $normalizedTarget = replace $target "-" " " }}
-          {{ end }}
-          
-          {{ if eq (lower $filename) (lower $normalizedTarget) }}
-            {{ $found = true }}
-            {{ $matchedPage = . }}
-            <!-- Break the loop once we find a filename match -->
-            {{ break }}
-          {{ end }}
-        {{ end }}
-        
-        <!-- Only try alias match if no filename match was found -->
-        {{ if not $found }}
-          {{ range where $.Site.RegularPages "Section" "notes" }}
-            <!-- Skip checking aliases if there's already a file with this name -->
-            {{ $fileExists := false }}
-            {{ range where $.Site.RegularPages "Section" "notes" }}
-              {{ if eq (lower .File.BaseFileName) (lower $target) }}
-                {{ $fileExists = true }}
-              {{ end }}
-            {{ end }}
-            
-            {{ if not $fileExists }}
-              {{ with .Params.aliases }}
-                {{ range . }}
-                  {{ if eq (lower (trim . " ")) (lower $target) }}
-                    {{ $found = true }}
-                    {{ $matchedPage = $.Page }}
-                  {{ end }}
-                {{ end }}
-              {{ end }}
-            {{ end }}
-          {{ end }}
-        {{ end }}
-        
-        {{ $replacement := "" }}
-        {{ if $found }}
-          {{ $replacement = printf `<a href="%s" class="wikilink">%s</a>` 
-            $matchedPage.RelPermalink 
-            $display
-          }}
-        {{ else }}
-          {{ $replacement = printf `<span class="wikilink broken" title="%s">%s</span>` 
-            $.Site.Params.wikilinks.brokenLinkTooltip 
-            $display 
-          }}
-        {{ end }}
-        
-        {{ $content = replace $content $original $replacement }}
-      {{ end }}
-      
-      {{ $content | markdownify }}
+      {{ $wikilinksContext := dict "content" $content "page" . }}
+      {{ $processedContent := partial "features/wikilinks.html" $wikilinksContext }}
+      {{ $processedContent | markdownify }}
     </div>
     
     <div class="note-footer">
