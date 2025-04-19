@@ -1,0 +1,21 @@
+<div class="growth-filter custom-select">
+  <div class="select-selected">{{ $.Site.Params.filters.growthLabel | default "All Stages" }}</div>
+  <div class="select-items">
+    <div class="select-item" data-value="">{{ $.Site.Params.filters.growthLabel | default "All Stages" }}</div>
+    {{ $growthStages := slice }}
+    {{ range where .Site.RegularPages "Section" "notes" }}
+      {{ with .Params.growth }}
+        {{ $growthStages = $growthStages | append . }}
+      {{ end }}
+    {{ end }}
+    {{ range ($growthStages | uniq | sort) }}
+      {{ $count := len (where $.Site.RegularPages "Params.growth" .) }}
+      <div class="select-item" data-value="{{ . }}">
+        <span class="item-label">{{ . }}</span>
+        {{ if $.Site.Params.filters.showGrowthCount }}
+          <span class="item-count">({{ $count }})</span>
+        {{ end }}
+      </div>
+    {{ end }}
+  </div>
+</div> 

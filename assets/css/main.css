@@ -332,15 +332,20 @@ header nav {
 }
 
 .select-item {
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: var(--t-font-small);
-  font-weight: var(--t-weight-regular);
-  color: var(--t-foreground);
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  align-items: center;
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.item-label {
+  flex: 1;
+}
+
+.item-count {
+  margin-left: var(--space-sm);
+  color: var(--t-foreground-alt);
+  font-size: var(--t-font-small);
 }
 
 .select-item:hover {

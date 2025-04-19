@@ -10,58 +10,15 @@
 
   <div class="filter-bar">
     {{ if .Site.Params.filters.enableSearch }}
-    <div class="search-container">
-      <input type="text" id="search-input" placeholder="Search titles..">
-      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="11" cy="11" r="7"/>
-        <path d="M16.5 16.5L21 21" stroke-linecap="round"/>
-      </svg>
-    </div>
+      {{ partial "features/search.html" . }}
     {{ end }}
     
     {{ if .Site.Params.filters.enableCategory }}
-    <div class="category-filter custom-select">
-      <div class="select-selected">All Categories</div>
-      <div class="select-items">
-        <div class="select-item" data-value="">All Categories</div>
-        {{ $categories := slice }}
-        {{ range where .Site.RegularPages "Section" "notes" }}
-          {{ with .Params.category }}
-            {{ $categories = $categories | append . }}
-          {{ end }}
-        {{ end }}
-        {{ range ($categories | uniq | sort) }}
-          {{ $count := len (where $.Site.RegularPages "Params.category" .) }}
-          <div class="select-item" data-value="{{ . }}">
-            {{ . }}
-            {{ if $.Site.Params.filters.showCategoryCount }}
-              <span class="count">{{ $count }}</span>
-            {{ end }}
-          </div>
-        {{ end }}
-      </div>
-    </div>
+      {{ partial "features/category-filter.html" . }}
     {{ end }}
     
     {{ if .Site.Params.filters.enableGrowth }}
-    <div class="growth-filter custom-select">
-      <div class="select-selected">All Stages</div>
-      <div class="select-items">
-        <div class="select-item" data-value="">All Stages</div>
-        {{ $growthStages := slice }}
-        {{ range where .Site.RegularPages "Section" "notes" }}
-          {{ with .Params.growth }}
-            {{ $growthStages = $growthStages | append . }}
-          {{ end }}
-        {{ end }}
-        {{ range ($growthStages | uniq | sort) }}
-          {{ $count := len (where $.Site.RegularPages "Params.growth" .) }}
-          <div class="select-item" data-value="{{ . }}">
-            {{ . }}{{ if $.Site.Params.filters.showGrowthCount }} ({{ $count }}){{ end }}
-          </div>
-        {{ end }}
-      </div>
-    </div>
+      {{ partial "features/growth-filter.html" . }}
     {{ end }}
   </div>
 </div>

@@ -1,0 +1,21 @@
+<div class="category-filter custom-select">
+  <div class="select-selected">{{ $.Site.Params.filters.categoryLabel | default "All Categories" }}</div>
+  <div class="select-items">
+    <div class="select-item" data-value="">{{ $.Site.Params.filters.categoryLabel | default "All Categories" }}</div>
+    {{ $categories := slice }}
+    {{ range where .Site.RegularPages "Section" "notes" }}
+      {{ with .Params.category }}
+        {{ $categories = $categories | append . }}
+      {{ end }}
+    {{ end }}
+    {{ range ($categories | uniq | sort) }}
+      {{ $count := len (where $.Site.RegularPages "Params.category" .) }}
+      <div class="select-item" data-value="{{ . }}">
+        <span class="item-label">{{ . }}</span>
+        {{ if $.Site.Params.filters.showCategoryCount }}
+          <span class="item-count">({{ $count }})</span>
+        {{ end }}
+      </div>
+    {{ end }}
+  </div>
+</div> 

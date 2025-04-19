@@ -4,12 +4,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const growthFilter = document.querySelector('.growth-filter');
   const noteItems = document.querySelectorAll('.note-item');
   
-  let searchTimeout;
-
+  // Debounce for better performance with many notes
   function debounceSearch(callback, wait) {
+    let timeout;
     return (...args) => {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => callback.apply(this, args), wait);
+      clearTimeout(timeout);
+      timeout = setTimeout(() => callback.apply(this, args), wait);
     };
   }
 
@@ -18,100 +18,63 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedCategory = categoryFilter?.querySelector('.select-selected')?.dataset.value || '';
     const selectedGrowth = growthFilter?.querySelector('.select-selected')?.dataset.value || '';
     
-    noteItems.forEach(item => {
-      const title = item.querySelector('.note-title a').textContent.toLowerCase();
-      const category = item.dataset.category || '';
-      const growth = item.dataset.growth || '';
-      
-      const matchesSearch = !searchTerm || title.includes(searchTerm);
-      const matchesCategory = !selectedCategory || category.toLowerCase() === selectedCategory.toLowerCase();
-      const matchesGrowth = !selectedGrowth || growth.toLowerCase() === selectedGrowth.toLowerCase();
-      
-      if (matchesSearch && matchesCategory && matchesGrowth) {
-        item.classList.remove('hidden');
-        item.classList.add('visible');
-      } else {
-        item.classList.remove('visible');
-        item.classList.add('hidden');
-      }
+    // Use requestAnimationFrame for smooth UI updates
+    requestAnimationFrame(() => {
+      noteItems.forEach(item => {
+        const title = item.querySelector('.note-title a').textContent.toLowerCase();
+        const category = item.dataset.category || '';
+        const growth = item.dataset.growth || '';
+        
+        const matchesSearch = !searchTerm || title.includes(searchTerm);
+        const matchesCategory = !selectedCategory || category.toLowerCase() === selectedCategory.toLowerCase();
+        const matchesGrowth = !selectedGrowth || growth.toLowerCase() === selectedGrowth.toLowerCase();
+        
+        item.classList.toggle('hidden', !(matchesSearch && matchesCategory && matchesGrowth));
+      });
     });
     
-    // Update URL for sharing
+    // Update URL parameters
     const params = new URLSearchParams(window.location.search);
-    if (searchTerm) {
-      params.set('search', searchTerm);
-    } else {
-      params.delete('search');  // Remove search param if empty
-    }
-    if (selectedCategory) {
-      params.set('category', selectedCategory);
-    } else {
-      params.delete('category');  // Remove category param if "All Categories"
-    }
-    if (selectedGrowth) {
-      params.set('growth', selectedGrowth);
-    } else {
-      params.delete('growth');  // Remove growth param if "All"
-    }
+    [
+      ['search', searchTerm],
+      ['category', selectedCategory],
+      ['growth', selectedGrowth]
+    ].forEach(([key, value]) => {
+      if (value) params.set(key, value);
+      else params.delete(key);
+    });
     
-    const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-    history.replaceState(null, '', newUrl);
+    history.replaceState(null, '', `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`);
   }
   
-  const handleSearch = debounceSearch(() => {
-    updateResults();
-  }, 150);
-
-  // Add event listeners
+  // Add event listeners with debouncing
+  const handleSearch = debounceSearch(updateResults, 150);
+  
   if (searchInput) {
     searchInput.addEventListener('input', handleSearch);
-    // Add event listener for search clearing
     searchInput.addEventListener('change', function() {
-      if (!this.value) {
-        updateResults();
-      }
+      if (!this.value) updateResults();
     });
   }
 
-  // Listen for custom select changes
   [categoryFilter, growthFilter].forEach(filter => {
     if (filter) {
-      filter.addEventListener('select-change', () => {
-        updateResults();  // Immediate update when filter changes
+      filter.addEventListener('select-change', function(e) {
+        const selected = e.target.querySelector('.select-item.selected');
+        if (selected) {
+          const label = selected.querySelector('.item-label')?.textContent || selected.textContent;
+          const value = selected.dataset.value;
+          const selectedDisplay = this.querySelector('.select-selected');
+          selectedDisplay.textContent = label;
+          selectedDisplay.dataset.value = value;
+        }
+        updateResults();
       });
     }
   });
   
-  // Initialize from URL params and show all items if no filters
+  // Initialize from URL parameters
   const params = new URLSearchParams(window.location.search);
-  if (params.toString()) {
-    if (searchInput && params.has('search')) {
-      searchInput.value = params.get('search');
-    }
-    if (categoryFilter && params.has('category')) {
-      const value = params.get('category');
-      const selected = categoryFilter.querySelector('.select-selected');
-      const item = categoryFilter.querySelector(`.select-item[data-value="${value}"]`);
-      if (selected && item) {
-        selected.textContent = item.textContent;
-        selected.dataset.value = value;
-      }
-    }
-    if (growthFilter && params.has('growth')) {
-      const value = params.get('growth');
-      const selected = growthFilter.querySelector('.select-selected');
-      const item = growthFilter.querySelector(`.select-item[data-value="${value}"]`);
-      if (selected && item) {
-        selected.textContent = item.textContent;
-        selected.dataset.value = value;
-      }
-    }
-    updateResults();
-  } else {
-    // Show all items if no filters
-    noteItems.forEach(item => {
-      item.classList.remove('hidden');
-      item.classList.add('visible');
-    });
-  }
+  if (params.has('search') && searchInput) searchInput.value = params.get('search');
+  updateResults();
 }); 

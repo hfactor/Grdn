@@ -10,11 +10,22 @@ theme = 'Grdn'
 
   # Filter Settings
   [params.filters]
+    # Search Settings
     enableSearch = true      # Enable title search
+    searchPlaceholder = "Search titles.."
+    
+    # Category Filter Settings
     enableCategory = true    # Enable category filter
-    enableGrowth = true     # Enable growth stage filter
-    showCategoryCount = true    # Show note count in category filter
-    showGrowthCount = false     # Show note count in growth stage filter
+    showCategoryCount = true # Show note count in category filter
+    categoryLabel = "All Categories"
+    
+    # Growth Filter Settings
+    enableGrowth = false     # Enable growth stage filter
+    showGrowthCount = false # Show note count in growth stage filter
+    growthLabel = "All Stages"
+    
+    # Real-time Filter Settings
+    debounceTime = 150      # Milliseconds to wait before updating results
     
   # Theme Settings  
   [params.theme]
