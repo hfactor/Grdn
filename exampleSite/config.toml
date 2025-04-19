@@ -30,7 +30,16 @@ theme = 'Grdn'
   # Footer Configuration
   [params.footer]
     enabled = true
-    text = "Built with Hugo using the Grdn theme"
+    showOnHome = true        # Show footer on homepage
+    leftText = "Built with <a href=\"https://gohugo.io\">Hugo</a>"     # Left section content
+    rightText = "Using the Grdn theme"  # Right section content
+
+  # Header Configuration
+  [params.header]
+    fixed = true              # Whether header is fixed/sticky
+    showTitle = true          # Show site title
+    showLogo = true          # Show logo
+    logoPath = ""            # Custom logo path (empty for default)
 
 # Hugo Settings
 [markup]

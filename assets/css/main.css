@@ -130,10 +130,15 @@ h4, h5, h6 {
 /* Header */
 header {
   background: var(--t-background);
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 10;
   padding: var(--space-sm) 0;
+  transition: background-color 0.15s ease;
+}
+
+.header-fixed {
+  position: sticky;
+  top: 0;
 }
 
 header nav {
@@ -604,34 +609,60 @@ a:hover {
 
 /* Footer styles */
 footer {
-  max-width: var(--container-width);
-  margin: var(--space-xl) auto;
-  padding: var(--space-xl) 0;
-  text-align: center;
-  color: var(--muted);
+  background: var(--t-background);
+  padding: var(--space-lg) 0;
+  margin-top: var(--space-2xl);
+  border-top: var(--border-width) solid var(--border);
 }
 
 footer nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md);
 }
 
 .footer-left,
 .footer-right {
-  font-size: var(--t-font-tiny);
-  color: var(--t-foreground-alt);
+  font-size: var(--t-font-small);
+  color: var(--t-foreground-ui);
+}
+
+.footer-left p,
+.footer-right p {
+  margin: 0;
 }
 
 .footer-left a,
 .footer-right a {
-  color: var(--t-accent);
-  text-decoration: none;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: var(--border-width);
+  text-underline-offset: 0.2em;
 }
 
 .footer-left a:hover,
 .footer-right a:hover {
-  text-decoration: underline;
+  color: var(--t-accent);
+}
+
+@media (max-width: 640px) {
+  footer nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Site Logo */
+.site-logo {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+img.site-logo {
+  object-fit: contain;
 }
 
 /* Smooth anchor offset */
