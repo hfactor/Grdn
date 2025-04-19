@@ -105,6 +105,8 @@ h1 {
   line-height: var(--t-line-height-tight);
   margin: var(--space-section) 0 var(--space-component);
   letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
 }
 
 h2 {
@@ -118,6 +120,8 @@ h3 {
   font-size: var(--t-font-large);
   font-weight: var(--t-weight-bold);
   margin: var(--space-component) 0 var(--space-element);
+  display: flex;
+  align-items: center;
 }
 
 h4, h5, h6 {
@@ -880,4 +884,46 @@ html {
   padding: var(--space-lg);
   background: var(--t-background-alt);
   border-radius: var(--radius);
+}
+
+/* Status Indicators */
+.status-indicators {
+  display: inline-flex;
+  gap: var(--space-3xs);
+  align-items: center;
+}
+
+.status-indicator {
+  font-size: 0.8em;
+  color: var(--t-foreground-ui);
+  cursor: help;
+}
+
+/* Position variants */
+.status-indicators[data-position="prefix"] {
+  margin-right: var(--space-2xs);
+  order: -1;
+}
+
+.status-indicators[data-position="suffix"] {
+  margin-left: var(--space-2xs);
+  order: 1;
+}
+
+/* Ensure proper alignment in both h1 and h3 */
+h1, h3 {
+  display: flex;
+  align-items: center;
+}
+
+h1 a, h3 a {
+  display: inline-flex;
+  align-items: center;
+}
+
+.note-title h3 a {
+  color: var(--t-foreground);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }

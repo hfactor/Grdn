@@ -1,8 +1,24 @@
 <div class="notes-list">
   {{ range (where .Site.RegularPages "Section" "notes").ByDate.Reverse }}
+    {{ $currentPage := . }}
     <div class="note-item" data-category="{{ .Params.category }}" data-growth="{{ .Params.growth }}">
       <div class="note-title">
-        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <h3>
+          <a href="{{ .RelPermalink }}">
+            {{ if .Site.Params.statusIndicators.enabled }}
+              <span class="status-indicators" data-position="{{ default "prefix" .Site.Params.statusIndicators.position }}">
+                {{ range $key, $value := .Site.Params.statusIndicators.types }}
+                  {{ if (index $currentPage.Params $key) }}
+                    <span class="status-indicator" {{ if $currentPage.Site.Params.statusIndicators.showTooltip }}title="{{ $value.tooltip }}"{{ end }}>
+                      {{ $value.icon }}
+                    </span>
+                  {{ end }}
+                {{ end }}
+              </span>
+            {{ end }}
+            {{ .Title }}
+          </a>
+        </h3>
       </div>
       {{ if .Params.category }}
         <div class="note-meta">

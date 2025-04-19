@@ -78,6 +78,16 @@ theme = 'Grdn'
   [params.status]
     showStatusChips = true    # Enable/disable status indicators
 
+  # Status Indicator Settings
+  [params.statusIndicators]
+    enabled = true
+    position = "suffix"
+    showTooltip = true
+
+    [params.statusIndicators.types]
+    favorite = { icon = "✦", tooltip = "Favorite" }
+    reread = { icon = "❷", tooltip = "Re-Read" }
+
 # Hugo Settings
 [markup]
   [markup.goldmark.renderer]

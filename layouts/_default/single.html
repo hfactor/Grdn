@@ -2,7 +2,21 @@
 <div class="note-container">
   <article class="note-content">
     <div class="note-header">
-      <h1>{{ .Title }}</h1>
+      <h1>
+        {{ if .Site.Params.statusIndicators.enabled }}
+          <span class="status-indicators" data-position="{{ default "prefix" .Site.Params.statusIndicators.position }}">
+            {{ range $key, $value := .Site.Params.statusIndicators.types }}
+              {{ if (index $.Params $key) }}
+                <span class="status-indicator" {{ if $.Site.Params.statusIndicators.showTooltip }}title="{{ $value.tooltip }}"{{ end }}>
+                  {{ $value.icon }}
+                </span>
+              {{ end }}
+            {{ end }}
+          </span>
+        {{ end }}
+        {{ .Title }}
+      </h1>
+      
       {{ if .Date }}
       <div class="note-date">
         {{ .Date.Format "January 2, 2006" }}
