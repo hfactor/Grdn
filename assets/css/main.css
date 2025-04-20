@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Overpass+Mono&display=swap');
 @import "hover-preview.css";
+@import "view-toggle.css";
 
 /* Base Variables */
 :root {
@@ -211,7 +212,7 @@ header nav {
   padding: 0;
 }
 
-/* Filter Bar */
+/* Filter Container & Button */
 .filter-container {
   position: relative;
   margin: var(--space-component) 0;
@@ -219,19 +220,20 @@ header nav {
   justify-content: flex-end;
 }
 
-.filter-toggle {
+.filter-button {
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-xs) var(--space-sm);
+  justify-content: center;
+  padding: var(--space-xs);
   border: var(--border-width) solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 50%;
   background: var(--t-background);
   color: var(--t-foreground);
-  font-size: var(--t-font-small);
-  font-weight: var(--t-weight-regular);
   cursor: pointer;
   transition: all var(--transition);
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
 }
 
 /* Filter bar as dropdown */
@@ -300,6 +302,21 @@ header nav {
 
 /* Mobile styles */
 @media (max-width: 768px) {
+  .filter-container {
+    position: fixed;
+    bottom: var(--space-md);
+    right: var(--space-md);
+    margin: 0;
+    z-index: 1000;
+  }
+
+  .filter-button {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
   .filter-bar {
     position: fixed;
     bottom: 0;
@@ -312,18 +329,43 @@ header nav {
     transform: translateY(100%);
     transition: transform var(--transition);
     padding: 0;
+    margin: 0;
   }
 
   .filter-bar.active {
     transform: translateY(0);
   }
 
-  .filter-mobile-header {
+  .filter-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+  }
+
+  .filter-backdrop.active {
     display: block;
   }
 
-  .filter-backdrop {
-    display: block;
+  .filter-mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .filter-mobile-close {
+    border: none;
+    background: none;
+    padding: var(--space-xs);
+    color: var(--t-foreground);
+    cursor: pointer;
   }
 
   .filter-group {
@@ -372,47 +414,37 @@ header nav {
 /* Custom Select Styling */
 .custom-select {
   position: relative;
-  flex: 1;
-  min-width: 0;
+  width: 100%;
 }
 
 .select-selected {
-  height: 36px;
-  padding: 0 32px 0 12px;
+  position: relative;
+  padding: var(--space-xs) var(--space-sm);
+  padding-right: 32px;
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: var(--radius);
   background: var(--t-background);
   color: var(--t-foreground);
-  font-size: var(--t-font-small);
-  font-weight: var(--t-weight-regular);
+  cursor: pointer;
   display: flex;
   align-items: center;
-  cursor: pointer;
-  position: relative;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  gap: var(--space-sm);
 }
 
-.select-selected:after {
-  content: "";
+.dropdown-icon {
   position: absolute;
-  right: 12px;
+  right: var(--space-sm);
   top: 50%;
-  width: 8px;
-  height: 8px;
-  border-right: 1.5px solid var(--t-foreground-alt);
-  border-bottom: 1.5px solid var(--t-foreground-alt);
-  transform: translateY(-70%) rotate(45deg);
-  transition: transform 0.2s ease;
+  transform: translateY(-50%);
+  color: var(--t-foreground-alt);
+  pointer-events: none;
 }
 
-.select-selected.select-arrow-active:after {
-  transform: translateY(-30%) rotate(225deg);
+.select-arrow-active .dropdown-icon {
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .select-items {
-  display: none;
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -420,10 +452,11 @@ header nav {
   z-index: 99;
   background: var(--t-background);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: var(--radius);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   max-height: 300px;
   overflow-y: auto;
+  display: none;
 }
 
 .select-items.select-show {
@@ -431,28 +464,36 @@ header nav {
 }
 
 .select-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: var(--space-xs) var(--space-sm);
-}
-
-.item-label {
-  flex: 1;
-}
-
-.item-count {
-  margin-left: var(--space-sm);
-  color: var(--t-foreground-alt);
-  font-size: var(--t-font-small);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
 }
 
 .select-item:hover {
   background: var(--t-background-alt);
 }
 
-.same-as-selected {
+.select-item.selected {
   background: var(--t-background-alt);
+  color: var(--t-accent);
+}
+
+.item-count {
+  font-size: var(--t-font-tiny);
+  color: var(--t-foreground-alt);
+  margin-left: var(--space-sm);
+}
+
+/* Filter section title */
+.filter-section-title {
+  font-size: var(--t-font-small);
+  color: var(--t-foreground-alt);
+  margin-bottom: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Count chip styling */
@@ -1085,4 +1126,58 @@ h1 a, h3 a {
     grid-template-columns: 1fr;
   }
 }
+
+/* Search Input */
+.search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: var(--space-xs) var(--space-sm);
+  padding-right: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--t-background);
+  color: var(--t-foreground);
+}
+
+.search-icon {
+  position: absolute;
+  right: var(--space-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--t-foreground-alt);
+  pointer-events: none;
+}
+
+/* Dropdown Icons */
+.select-selected {
+  position: relative;
+  padding: var(--space-xs) var(--space-sm);
+  padding-right: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--t-background);
+  color: var(--t-foreground);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.dropdown-icon {
+  position: absolute;
+  right: var(--space-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--t-foreground-alt);
+  pointer-events: none;
+}
+
+.select-arrow-active .dropdown-icon {
+  transform: translateY(-50%) rotate(180deg);
 }

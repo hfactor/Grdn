@@ -2,6 +2,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
 
-{{ $style := resources.Get "css/main.css" | resources.Minify }}
+{{ $style := resources.Get "css/new.css" | resources.Minify }}
 
 <link rel="stylesheet" href="{{ $style.RelPermalink }}">

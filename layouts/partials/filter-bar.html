@@ -1,44 +1,40 @@
 <div class="filter-container">
-  <button class="filter-toggle" id="filter-toggle">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M3 4h18M6 12h12M9 18h6" stroke-linecap="round"/>
-    </svg>
-    <span>Filters</span>
-  </button>
+  <!-- Filter Button -->
+  <button id="filter-toggle" class="filter-button">⌘</button>
 
-  <!-- Mobile backdrop -->
-  <div class="filter-backdrop"></div>
-
+  <!-- Filter Bar -->
   <div class="filter-bar">
-    <!-- Mobile header -->
-    <div class="filter-mobile-header">
-      <div class="filter-mobile-title">Filters</div>
+    <!-- Search -->
+    <div class="filter-section">
+      <div class="filter-section-title">search</div>
+      <div class="search-wrapper">
+        <input type="text" id="search-input" class="search-input" placeholder="Search titles...">
+        <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="M21 21l-4.35-4.35"/>
+        </svg>
+      </div>
     </div>
 
-    <div class="filter-group">
-      {{ if .Site.Params.filters.enableSearch }}
-        <div class="filter-section">
-          {{ partial "features/search.html" . }}
-        </div>
-      {{ end }}
-      
-      {{ if .Site.Params.filters.enableCategory }}
-        <div class="filter-section">
-          {{ partial "features/category-filter.html" . }}
-        </div>
-      {{ end }}
-      
-      {{ if .Site.Params.filters.enableGrowth }}
-        <div class="filter-section">
-          {{ partial "features/growth-filter.html" . }}
-        </div>
-      {{ end }}
+    <!-- Categories -->
+    <div class="filter-section">
+      <div class="filter-section-title">categories</div>
+      {{ partial "features/category-filter.html" . }}
+    </div>
 
-      {{ if .Site.Params.viewToggle.enabled }}
-        <div class="filter-section">
-          {{ partial "features/view-toggle.html" . }}
-        </div>
-      {{ end }}
+    <!-- Growth Stage -->
+    <div class="filter-section">
+      <div class="filter-section-title">growth stage</div>
+      {{ partial "features/growth-filter.html" . }}
+    </div>
+
+    <!-- View Toggle -->
+    <div class="filter-section">
+      <div class="filter-section-title">view</div>
+      {{ partial "features/view-toggle.html" . }}
     </div>
   </div>
+
+  <!-- Backdrop -->
+  <div class="filter-backdrop"></div>
 </div>

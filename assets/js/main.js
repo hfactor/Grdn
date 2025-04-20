@@ -1,154 +1,204 @@
+// Single DOMContentLoaded event listener
 document.addEventListener('DOMContentLoaded', function() {
-  // Filter toggle
+  // Filter toggle functionality
   const filterToggle = document.getElementById('filter-toggle');
   const filterBar = document.querySelector('.filter-bar');
-  const filterBackdrop = document.querySelector('.filter-backdrop');
-  const filterClose = document.querySelector('.filter-mobile-close');
   
-  function closeFilter() {
-    filterBar.classList.remove('active');
-    filterBackdrop?.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  function openFilter() {
-    filterBar.classList.add('active');
-    filterBackdrop?.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent body scroll on mobile
-  }
-
   if (filterToggle && filterBar) {
+    const filterBackdrop = document.querySelector('.filter-backdrop');
+    
     filterToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (filterBar.classList.contains('active')) {
-        closeFilter();
-      } else {
-        openFilter();
-      }
+      filterBar.classList.toggle('active');
+      filterBackdrop?.classList.toggle('active');
+      document.body.style.overflow = filterBar.classList.contains('active') ? 'hidden' : '';
     });
 
-    // Mobile close button
-    filterClose?.addEventListener('click', closeFilter);
-    
-    // Backdrop click
-    filterBackdrop?.addEventListener('click', closeFilter);
-
-    // Close when clicking outside on desktop
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth > 768) { // Only for desktop
-        if (!filterBar.contains(e.target) && !filterToggle.contains(e.target)) {
-          closeFilter();
-        }
-      }
+    // Close on backdrop click
+    filterBackdrop?.addEventListener('click', () => {
+      filterBar.classList.remove('active');
+      filterBackdrop.classList.remove('active');
+      document.body.style.overflow = '';
     });
   }
 
-  // Search functionality
-  const searchInput = document.getElementById('search-input');
-  if (searchInput) {
-    searchInput.addEventListener('input', debounce(() => {
-      filterContent();
-    }, 300));
-  }
-
-  // Custom Select Initialization
-  const customSelects = document.querySelectorAll('.custom-select');
-  customSelects.forEach(select => {
+  // Initialize custom select dropdowns
+  document.querySelectorAll('.custom-select').forEach(select => {
     const selected = select.querySelector('.select-selected');
     const items = select.querySelector('.select-items');
+    const filterType = select.getAttribute('data-filter-type');
 
-    if (selected && items) {
-      selected.addEventListener('click', function(e) {
-        e.stopPropagation();
-        this.classList.toggle('select-arrow-active');
-        items.classList.toggle('select-show');
+    if (!selected || !items || !filterType) return;
+
+    // Toggle dropdown visibility
+    selected.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Close other dropdowns
+      document.querySelectorAll('.custom-select').forEach(otherSelect => {
+        if (otherSelect !== select) {
+          otherSelect.querySelector('.select-items')?.classList.remove('select-show');
+          otherSelect.querySelector('.select-selected')?.classList.remove('select-arrow-active');
+        }
       });
 
-      const selectItems = items.querySelectorAll('.select-item');
-      selectItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-          e.stopPropagation();
-          
-          // Remove selected class from all items
-          selectItems.forEach(i => i.classList.remove('selected'));
-          // Add selected class to clicked item
-          this.classList.add('selected');
-          
-          const label = this.querySelector('.item-label')?.textContent || this.textContent;
-          selected.textContent = label;
-          selected.dataset.value = this.dataset.value;
-          
-          items.classList.remove('select-show');
-          selected.classList.remove('select-arrow-active');
-          
-          // Call filterContent when selection changes
-          filterContent();
-        });
+      // Toggle current dropdown
+      items.classList.toggle('select-show');
+      selected.classList.toggle('select-arrow-active');
+    });
+
+    // Handle item selection
+    items.querySelectorAll('.select-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const value = this.getAttribute('data-value');
+        const label = this.querySelector('.item-label');
+        const text = label ? label.textContent : this.textContent;
+
+        // Update selected text and state
+        selected.textContent = text;
+        selected.setAttribute('data-value', value);
+
+        // Update selected state
+        items.querySelectorAll('.select-item').forEach(i => i.classList.remove('selected'));
+        this.classList.add('selected');
+
+        // Hide dropdown
+        items.classList.remove('select-show');
+        selected.classList.remove('select-arrow-active');
+
+        // Update URL and trigger filter
+        updateURLParameter(filterType, value);
+      });
+    });
+  });
+
+  // Add this new function to sync UI with URL parameters
+  function syncUIWithURLParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Sync category filter
+    const categorySelect = document.querySelector('.category-filter');
+    if (categorySelect) {
+      const categoryValue = urlParams.get('category');
+      if (categoryValue) {
+        const categoryItem = categorySelect.querySelector(`[data-value="${categoryValue}"]`);
+        if (categoryItem) {
+          const text = categoryItem.querySelector('.item-label')?.textContent || categoryItem.textContent;
+          const selected = categorySelect.querySelector('.select-selected');
+          selected.textContent = text;
+          selected.setAttribute('data-value', categoryValue);
+          categoryItem.classList.add('selected');
+        }
+      }
+    }
+
+    // Sync growth filter
+    const growthSelect = document.querySelector('.growth-filter');
+    if (growthSelect) {
+      const growthValue = urlParams.get('growth');
+      if (growthValue) {
+        const growthItem = growthSelect.querySelector(`[data-value="${growthValue}"]`);
+        if (growthItem) {
+          const text = growthItem.querySelector('.item-label')?.textContent || growthItem.textContent;
+          const selected = growthSelect.querySelector('.select-selected');
+          selected.textContent = text;
+          selected.setAttribute('data-value', growthValue);
+          growthItem.classList.add('selected');
+        }
+      }
+    }
+  }
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.custom-select')) {
+      document.querySelectorAll('.select-items').forEach(items => {
+        items.classList.remove('select-show');
+      });
+      document.querySelectorAll('.select-selected').forEach(selected => {
+        selected.classList.remove('select-arrow-active');
       });
     }
   });
 
-  // Close selects when clicking outside
-  document.addEventListener('click', function() {
-    const items = document.querySelectorAll('.select-items');
-    const selected = document.querySelectorAll('.select-selected');
-    items.forEach(item => item.classList.remove('select-show'));
-    selected.forEach(sel => sel.classList.remove('select-arrow-active'));
-  });
-
-  // Initialize theme
-  initializeTheme();
+  // Initialize filters and sync UI on page load
+  syncUIWithURLParams();
+  updateFilters();
 });
 
-function filterContent() {
-  const searchTerm = document.getElementById('search-input')?.value.toLowerCase() || '';
-  const selectedCategory = document.querySelector('.category-filter .select-selected')?.dataset.value || '';
-  const selectedGrowth = document.querySelector('.growth-filter .select-selected')?.dataset.value || '';
-  
-  const items = document.querySelectorAll('.note-item');
-  
-  items.forEach(item => {
-    const title = item.querySelector('.note-title')?.textContent.toLowerCase() || '';
-    const excerpt = item.querySelector('.note-excerpt')?.textContent.toLowerCase() || '';
-    const itemCategory = item.dataset.category || '';
-    const itemGrowth = item.dataset.growth || '';
+// Update filters function
+function updateFilters() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const selectedCategory = urlParams.get('category');
+  const selectedGrowth = urlParams.get('growth');
+  const searchQuery = urlParams.get('q');
 
-    const matchesSearch = !searchTerm || 
-      title.includes(searchTerm) || 
-      excerpt.includes(searchTerm);
+  console.log('Applying filters:', { selectedCategory, selectedGrowth, searchQuery }); // Debug log
 
-    const matchesCategory = !selectedCategory || itemCategory === selectedCategory;
-    const matchesGrowth = !selectedGrowth || itemGrowth === selectedGrowth;
-
-    item.style.display = (matchesSearch && matchesCategory && matchesGrowth) ? '' : 'none';
+  document.querySelectorAll('.note-item').forEach(item => {
+    let show = true;
+    
+    if (selectedCategory && selectedCategory !== 'all') {
+      const itemCategory = item.getAttribute('data-category');
+      if (itemCategory !== selectedCategory) {
+        show = false;
+      }
+    }
+    
+    if (selectedGrowth && selectedGrowth !== 'all') {
+      const itemGrowth = item.getAttribute('data-growth');
+      if (itemGrowth !== selectedGrowth) {
+        show = false;
+      }
+    }
+    
+    if (searchQuery) {
+      const title = item.querySelector('.note-item-title')?.textContent.toLowerCase() || '';
+      if (!title.includes(searchQuery.toLowerCase())) {
+        show = false;
+      }
+    }
+    
+    item.style.display = show ? '' : 'none';
   });
 
-  // Update URL
-  const params = new URLSearchParams(window.location.search);
-  if (searchTerm) params.set('search', searchTerm);
-  else params.delete('search');
-  if (selectedCategory) params.set('category', selectedCategory);
-  else params.delete('category');
-  if (selectedGrowth) params.set('growth', selectedGrowth);
-  else params.delete('growth');
-
-  const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-  history.replaceState(null, '', newUrl);
+  // Update counters if needed
+  updateFilterCounts();
 }
 
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
+// Add function to update filter counts
+function updateFilterCounts() {
+  const visibleItems = document.querySelectorAll('.note-item[style=""]').length;
+  const totalCount = document.querySelector('.total-count');
+  if (totalCount) {
+    totalCount.textContent = visibleItems;
+  }
 }
 
-function initializeTheme() {
-  const theme = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', theme);
-} 
+// Helper function to update URL parameters
+function updateURLParameter(key, value) {
+  if (!key) return;
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  if (!value || value === '' || value === 'all') {
+    urlParams.delete(key);
+  } else {
+    urlParams.set(key, value);
+  }
+  
+  const newUrl = `${window.location.pathname}${urlParams.toString() ? '?' + urlParams.toString() : ''}`;
+  window.history.pushState({ path: newUrl }, '', newUrl);
+  
+  // Trigger filter update
+  updateFilters();
+}
+
+// Handle browser back/forward
+window.addEventListener('popstate', () => {
+  updateFilters();
+});

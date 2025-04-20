@@ -1,6 +1,7 @@
 {{ $mainJs := resources.Get "js/main.js" | js.Build }}
 {{ $hoverJs := resources.Get "js/hover-preview.js" | js.Build }}
 {{ $viewToggleJs := resources.Get "js/view-toggle.js" | js.Build }}
+{{ $filterJs := resources.Get "js/filter.js" | js.Build }}
 
 {{ if site.Params.hoverPreviews.enabled }}
 <script src="{{ $hoverJs.RelPermalink }}"></script>
@@ -11,6 +12,7 @@
 {{ end }}
 
 <script src="{{ $mainJs.RelPermalink }}"></script>
+<script src="{{ $filterJs.RelPermalink }}"></script>
 
 {{ $theme := resources.Get "js/theme-toggle.js" | resources.Minify }}
 <script src="{{ $theme.RelPermalink }}"></script> 

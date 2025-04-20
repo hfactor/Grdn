@@ -1,8 +1,13 @@
-<div class="category-filter custom-select">
-  <div class="select-selected">All Categories</div>
+<div class="category-filter custom-select" data-filter-type="category">
+  <div class="select-selected">
+    {{ $.Site.Params.filters.categoryLabel | default "All Categories" }}
+    <svg class="dropdown-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M6 9l6 6 6-6"/>
+    </svg>
+  </div>
   <div class="select-items">
     <div class="select-item selected" data-value="">
-      <span class="item-label">All Categories</span>
+      <span class="item-label">{{ $.Site.Params.filters.categoryLabel | default "All Categories" }}</span>
     </div>
     {{ $categories := slice }}
     {{ range .Site.RegularPages }}
@@ -14,7 +19,7 @@
       {{ $count := len (where $.Site.RegularPages "Params.category" .) }}
       <div class="select-item" data-value="{{ . }}">
         <span class="item-label">{{ . }}</span>
-        <span class="item-count">({{ $count }})</span>
+        <span class="item-count">{{ $count }}</span>
       </div>
     {{ end }}
   </div>

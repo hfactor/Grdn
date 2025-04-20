@@ -20,7 +20,7 @@ theme = 'Grdn'
     categoryLabel = "All Categories"
     
     # Growth Filter Settings
-    enableGrowth = false     # Enable growth stage filter
+    enableGrowth = true     # Enable growth stage filter
     showGrowthCount = false # Show note count in growth stage filter
     growthLabel = "All Stages"
     
@@ -128,8 +128,6 @@ theme = 'Grdn'
 
 [outputs]
   home = ["HTML", "JSON"]  # JSON needed for search
-
-[taxonomies]
 
 [permalinks]
   notes = "/note/:filename/"
