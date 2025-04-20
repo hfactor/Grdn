@@ -2,95 +2,153 @@ document.addEventListener('DOMContentLoaded', function() {
   // Filter toggle
   const filterToggle = document.getElementById('filter-toggle');
   const filterBar = document.querySelector('.filter-bar');
+  const filterBackdrop = document.querySelector('.filter-backdrop');
+  const filterClose = document.querySelector('.filter-mobile-close');
   
-  if (filterToggle) {
-    filterToggle.addEventListener('click', () => {
-      filterBar.classList.toggle('expanded');
-      // Update button text based on state
-      const span = filterToggle.querySelector('span');
-      if (filterBar.classList.contains('expanded')) {
-        span.textContent = 'Filters';
+  function closeFilter() {
+    filterBar.classList.remove('active');
+    filterBackdrop?.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function openFilter() {
+    filterBar.classList.add('active');
+    filterBackdrop?.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent body scroll on mobile
+  }
+
+  if (filterToggle && filterBar) {
+    filterToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (filterBar.classList.contains('active')) {
+        closeFilter();
       } else {
-        span.textContent = 'Filters';
+        openFilter();
       }
     });
 
-    // Close filters when clicking outside
+    // Mobile close button
+    filterClose?.addEventListener('click', closeFilter);
+    
+    // Backdrop click
+    filterBackdrop?.addEventListener('click', closeFilter);
+
+    // Close when clicking outside on desktop
     document.addEventListener('click', (e) => {
-      if (!filterToggle.contains(e.target) && !filterBar.contains(e.target)) {
-        filterBar.classList.remove('expanded');
-        filterToggle.querySelector('span').textContent = 'Filters';
+      if (window.innerWidth > 768) { // Only for desktop
+        if (!filterBar.contains(e.target) && !filterToggle.contains(e.target)) {
+          closeFilter();
+        }
       }
     });
   }
 
-  // Theme toggle
-  const themeToggle = document.getElementById('theme-toggle');
-  
-  if (themeToggle) {
-    themeToggle.addEventListener('click', toggleTheme);
+  // Search functionality
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', debounce(() => {
+      filterContent();
+    }, 300));
   }
+
+  // Custom Select Initialization
+  const customSelects = document.querySelectorAll('.custom-select');
+  customSelects.forEach(select => {
+    const selected = select.querySelector('.select-selected');
+    const items = select.querySelector('.select-items');
+
+    if (selected && items) {
+      selected.addEventListener('click', function(e) {
+        e.stopPropagation();
+        this.classList.toggle('select-arrow-active');
+        items.classList.toggle('select-show');
+      });
+
+      const selectItems = items.querySelectorAll('.select-item');
+      selectItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.stopPropagation();
+          
+          // Remove selected class from all items
+          selectItems.forEach(i => i.classList.remove('selected'));
+          // Add selected class to clicked item
+          this.classList.add('selected');
+          
+          const label = this.querySelector('.item-label')?.textContent || this.textContent;
+          selected.textContent = label;
+          selected.dataset.value = this.dataset.value;
+          
+          items.classList.remove('select-show');
+          selected.classList.remove('select-arrow-active');
+          
+          // Call filterContent when selection changes
+          filterContent();
+        });
+      });
+    }
+  });
+
+  // Close selects when clicking outside
+  document.addEventListener('click', function() {
+    const items = document.querySelectorAll('.select-items');
+    const selected = document.querySelectorAll('.select-selected');
+    items.forEach(item => item.classList.remove('select-show'));
+    selected.forEach(sel => sel.classList.remove('select-arrow-active'));
+  });
 
   // Initialize theme
   initializeTheme();
-
-  // Initialize custom selects
-  initCustomSelects();
 });
 
-function initCustomSelects() {
-  document.querySelectorAll('.custom-select').forEach(select => {
-    const selected = select.querySelector('.select-selected');
-    const items = select.querySelector('.select-items');
-    
-    if (!selected || !items) return;
-
-    selected.addEventListener('click', e => {
-      e.stopPropagation();
-      closeAllSelect(select);
-      items.classList.toggle('select-show');
-      selected.classList.toggle('select-arrow-active');
-    });
-    
-    select.querySelectorAll('.select-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const value = item.dataset.value;
-        selected.textContent = item.textContent;
-        selected.dataset.value = value;
-        items.classList.remove('select-show');
-        selected.classList.remove('select-arrow-active');
-        
-        // Remove previous selection
-        select.querySelectorAll('.same-as-selected').forEach(el => {
-          el.classList.remove('same-as-selected');
-        });
-        // Add new selection
-        item.classList.add('same-as-selected');
-        
-        // Trigger change event for filters
-        const event = new CustomEvent('select-change', { 
-          detail: { value } 
-        });
-        select.dispatchEvent(event);
-      });
-    });
-  });
+function filterContent() {
+  const searchTerm = document.getElementById('search-input')?.value.toLowerCase() || '';
+  const selectedCategory = document.querySelector('.category-filter .select-selected')?.dataset.value || '';
+  const selectedGrowth = document.querySelector('.growth-filter .select-selected')?.dataset.value || '';
   
-  // Close selects when clicking outside
-  document.addEventListener('click', closeAllSelect);
+  const items = document.querySelectorAll('.note-item');
+  
+  items.forEach(item => {
+    const title = item.querySelector('.note-title')?.textContent.toLowerCase() || '';
+    const excerpt = item.querySelector('.note-excerpt')?.textContent.toLowerCase() || '';
+    const itemCategory = item.dataset.category || '';
+    const itemGrowth = item.dataset.growth || '';
+
+    const matchesSearch = !searchTerm || 
+      title.includes(searchTerm) || 
+      excerpt.includes(searchTerm);
+
+    const matchesCategory = !selectedCategory || itemCategory === selectedCategory;
+    const matchesGrowth = !selectedGrowth || itemGrowth === selectedGrowth;
+
+    item.style.display = (matchesSearch && matchesCategory && matchesGrowth) ? '' : 'none';
+  });
+
+  // Update URL
+  const params = new URLSearchParams(window.location.search);
+  if (searchTerm) params.set('search', searchTerm);
+  else params.delete('search');
+  if (selectedCategory) params.set('category', selectedCategory);
+  else params.delete('category');
+  if (selectedGrowth) params.set('growth', selectedGrowth);
+  else params.delete('growth');
+
+  const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+  history.replaceState(null, '', newUrl);
 }
 
-function closeAllSelect(elmnt) {
-  const items = document.getElementsByClassName('select-items');
-  const selected = document.getElementsByClassName('select-selected');
-  
-  Array.from(items).forEach(item => {
-    if (elmnt?.contains(item.parentElement)) return;
-    item.classList.remove('select-show');
-  });
-  
-  Array.from(selected).forEach(sel => {
-    if (elmnt?.contains(sel.parentElement)) return;
-    sel.classList.remove('select-arrow-active');
-  });
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+function initializeTheme() {
+  const theme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', theme);
 } 

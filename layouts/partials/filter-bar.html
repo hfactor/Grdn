@@ -1,30 +1,44 @@
 <div class="filter-container">
   <button class="filter-toggle" id="filter-toggle">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M3 4.5C3 4.22386 3.22386 4 3.5 4H20.5C20.7761 4 21 4.22386 21 4.5V6.5C21 6.77614 20.7761 7 20.5 7H3.5C3.22386 7 3 6.77614 3 6.5V4.5Z" stroke-linecap="round"/>
-      <path d="M6 11.5C6 11.2239 6.22386 11 6.5 11H17.5C17.7761 11 18 11.2239 18 11.5V13.5C18 13.7761 17.7761 14 17.5 14H6.5C6.22386 14 6 13.7761 6 13.5V11.5Z" stroke-linecap="round"/>
-      <path d="M10 18.5C10 18.2239 10.2239 18 10.5 18H13.5C13.7761 18 14 18.2239 14 18.5V20.5C14 20.7761 13.7761 21 13.5 21H10.5C10.2239 21 10 20.7761 10 20.5V18.5Z" stroke-linecap="round"/>
+      <path d="M3 4h18M6 12h12M9 18h6" stroke-linecap="round"/>
     </svg>
     <span>Filters</span>
   </button>
 
+  <!-- Mobile backdrop -->
+  <div class="filter-backdrop"></div>
+
   <div class="filter-bar">
+    <!-- Mobile header -->
+    <div class="filter-mobile-header">
+      <div class="filter-mobile-title">Filters</div>
+    </div>
+
     <div class="filter-group">
       {{ if .Site.Params.filters.enableSearch }}
-        {{ partial "features/search.html" . }}
+        <div class="filter-section">
+          {{ partial "features/search.html" . }}
+        </div>
       {{ end }}
       
       {{ if .Site.Params.filters.enableCategory }}
-        {{ partial "features/category-filter.html" . }}
+        <div class="filter-section">
+          {{ partial "features/category-filter.html" . }}
+        </div>
       {{ end }}
       
       {{ if .Site.Params.filters.enableGrowth }}
-        {{ partial "features/growth-filter.html" . }}
+        <div class="filter-section">
+          {{ partial "features/growth-filter.html" . }}
+        </div>
+      {{ end }}
+
+      {{ if .Site.Params.viewToggle.enabled }}
+        <div class="filter-section">
+          {{ partial "features/view-toggle.html" . }}
+        </div>
       {{ end }}
     </div>
-
-    {{ if .Site.Params.viewToggle.enabled }}
-      {{ partial "features/view-toggle.html" . }}
-    {{ end }}
   </div>
 </div>

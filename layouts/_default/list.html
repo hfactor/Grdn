@@ -1,26 +1,17 @@
 {{ define "main" }}
-<div class="content-container">
-  {{ if site.Params.filters.enabled }}
-    {{ partial "filter-bar.html" . }}
-  {{ end }}
+<div class="container">
+  <h1>{{ .Title }}</h1>
   
-  <div class="filter-controls">
-    {{ if site.Params.viewToggle.enabled }}
-      {{ partial "features/view-toggle.html" . }}
-    {{ end }}
-  </div>
-
-  <div class="notes-container notes-{{ default "list" site.Params.viewToggle.defaultView }}">
+  {{ partial "filter-system.html" . }}
+  
+  <div class="notes-container notes-list">
     {{ range .Pages }}
-      <article class="note-item">
-        <h2 class="note-title">
-          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-        </h2>
+      <article class="note-item" data-category="{{ .Params.category }}">
+        <div class="note-title">
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        </div>
         {{ if .Date }}
-          <div class="note-date">{{ .Date.Format "January 2, 2006" }}</div>
-        {{ end }}
-        {{ with .Params.category }}
-          <div class="note-category">{{ . }}</div>
+          <div class="note-meta">{{ .Date.Format "January 2, 2006" }}</div>
         {{ end }}
         {{ with .Summary }}
           <div class="note-excerpt">{{ . }}</div>

@@ -1,0 +1,51 @@
+<div class="filter-controls">
+  <!-- Search Bar -->
+  <div class="search-wrapper">
+    <input type="text" id="search-input" class="search-input" placeholder="Search titles...">
+    <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="M21 21l-4.35-4.35"/>
+    </svg>
+  </div>
+
+  <!-- Filter Button -->
+  <button class="filter-button" aria-label="Filter options">
+    <span>Filters</span>
+    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M3 6h18M6 12h12M9 18h6"/>
+    </svg>
+  </button>
+
+  <!-- View Toggle -->
+  <div class="view-toggle">
+    <button class="view-toggle-btn active" data-view="list">
+      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+      </svg>
+    </button>
+    <button class="view-toggle-btn" data-view="grid">
+      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+        <rect x="3" y="3" width="7" height="7"/>
+        <rect x="14" y="3" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Filter Dropdown -->
+  <div class="filter-dropdown">
+    <div class="filter-section">
+      <h3 class="filter-section-title">Categories</h3>
+      <div class="filter-options">
+        {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
+        <label class="filter-option">
+          <input type="checkbox" name="category" value="{{ $name }}">
+          <span>{{ $name }}</span>
+          <span class="count">({{ len $taxonomy }})</span>
+        </label>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</div> 
