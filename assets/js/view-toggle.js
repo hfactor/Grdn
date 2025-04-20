@@ -19,11 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
     listBtn.classList.toggle('active', view === 'list');
     gridBtn.classList.toggle('active', view === 'grid');
     
-    localStorage.setItem('viewPreference', view);
+    if (container.closest('[data-persist-choice="true"]')) {
+      localStorage.setItem('viewPreference', view);
+    }
   }
 
-  const savedView = localStorage.getItem('viewPreference');
-  setView(savedView || 'list');
+  const viewToggle = container.closest('.view-toggle');
+  const persistChoice = viewToggle?.dataset.persistChoice === 'true';
+  const defaultView = viewToggle?.dataset.defaultView || 'list';
+  
+  const savedView = persistChoice ? localStorage.getItem('viewPreference') : null;
+  setView(savedView || defaultView);
 
   listBtn.addEventListener('click', (e) => setView('list', e));
   gridBtn.addEventListener('click', (e) => setView('grid', e));

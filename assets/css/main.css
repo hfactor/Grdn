@@ -178,25 +178,27 @@ header nav {
   border: none;
   padding: 0;
   cursor: pointer;
-  color: var(--t-background);  /* Show background color in light mode */
+  color: var(--t-foreground);  /* Changed from t-background to t-foreground */
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.7;  /* Added for better visual feedback */
 }
 
-/* Circle Color Switching - Show opposite colors */
+/* Circle Color Switching */
 [data-theme="dark"] .theme-toggle {
-  color: var(--t-foreground);  /* Show foreground color (light) in dark mode */
+  color: var(--t-foreground);
 }
 
 [data-theme="light"] .theme-toggle {
-  color: var(--t-foreground);  /* Show foreground color (dark) in light mode */
+  color: var(--t-foreground);
 }
 
 /* Hover Animation */
 .theme-toggle:hover {
   transform: scale(1.2) rotate(180deg);
+  opacity: 1;  /* Full opacity on hover */
 }
 
 /* Position-specific styles */
@@ -212,48 +214,123 @@ header nav {
 /* Filter Bar */
 .filter-container {
   position: relative;
-  max-width: var(--container-width);
-  margin: 0 auto;
-  margin-top: var(--space-lg);
+  margin: var(--space-component) 0;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .filter-toggle {
-  display: none;
-  padding: 0.5rem 0.8rem;
-  border-radius: 0.2rem;
-  color: var(--t-background);
-  background: linear-gradient(to right, var(--t-foreground), var(--t-foreground-alt));
-  transition: 0.3s ease;
-  font-weight: var(--t-weight-regular);
-  font-size: var(--t-font-small);
-  border: 0;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  cursor: pointer;
-}
-
-.filter-toggle:hover {
-  opacity: 0.9;
-}
-
-.filter-bar {
   display: flex;
-  gap: 16px;
-  width: 90%;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius);
+  background: var(--t-background);
+  color: var(--t-foreground);
+  font-size: var(--t-font-small);
+  font-weight: var(--t-weight-regular);
+  cursor: pointer;
+  transition: all var(--transition);
 }
 
-@media (min-width: 768px) {
+/* Filter bar as dropdown */
+.filter-bar {
+  position: absolute;
+  top: calc(100% + var(--space-xs));
+  right: 0;
+  width: 320px;
+  background: var(--t-background);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: var(--space-md);
+  display: none;
+  z-index: 100;
+}
+
+.filter-bar.active {
+  display: block;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.filter-section {
+  width: 100%;
+}
+
+/* Mobile header */
+.filter-mobile-header {
+  display: none;
+  padding: var(--space-md);
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.filter-mobile-title {
+  font-size: var(--t-font-regular);
+  font-weight: var(--t-weight-bold);
+  color: var(--t-foreground);
+  text-align: center;
+}
+
+/* Backdrop */
+.filter-backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  z-index: 99;
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
+}
+
+.filter-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
   .filter-bar {
-      width: 100%; 
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: 100%;
+    max-height: 85vh;
+    border-radius: var(--radius) var(--radius) 0 0;
+    transform: translateY(100%);
+    transition: transform var(--transition);
+    padding: 0;
   }
-}
 
+  .filter-bar.active {
+    transform: translateY(0);
+  }
 
-.filter-bar > * {
-  flex: 1;
-  min-width: 0;
+  .filter-mobile-header {
+    display: block;
+  }
+
+  .filter-backdrop {
+    display: block;
+  }
+
+  .filter-group {
+    padding: var(--space-md);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* Search styling */
@@ -392,33 +469,6 @@ header nav {
   color: var(--t-foreground-alt);
   font-size: var(--t-font-tiny);
   font-weight: var(--t-weight-regular);
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .filter-toggle {
-    display: flex;
-  }
-
-  .filter-bar {
-    display: none;
-    flex-direction: column;
-    background: var(--t-background);
-    padding: var(--space-md);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    margin-top: var(--space-sm);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-  }
-
-  .filter-bar.expanded {
-    display: flex;
-  }
-
-  .filter-bar > * {
-    width: 100%;
-  }
 }
 
 /* Note List */
@@ -952,4 +1002,87 @@ h1 a, h3 a {
   align-items: center;
   gap: var(--space-sm);
   text-decoration: none;
+}
+
+/* View Toggle */
+.view-toggle {
+  display: flex;
+  gap: var(--space-2xs);
+  margin-left: var(--space-sm);
+}
+
+.view-toggle-btn {
+  padding: var(--space-2xs);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius);
+  background: var(--t-background);
+  color: var(--t-foreground);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.view-toggle-btn:hover {
+  border-color: var(--t-accent);
+}
+
+.view-toggle-btn.active {
+  background: var(--t-background-alt);
+  border-color: var(--t-accent);
+  color: var(--t-accent);
+}
+
+/* List View */
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.notes-list .note-item {
+  margin-bottom: var(--space-md);
+}
+
+.notes-list .note-item h3 {
+  font-size: var(--t-font-large);
+  margin-bottom: var(--space-xs);
+}
+
+/* Grid View */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-md);
+}
+
+.notes-grid .note-item {
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--t-background-alt);
+}
+
+.notes-grid .note-item h3 {
+  font-size: var(--t-font-regular);
+  margin-bottom: var(--space-xs);
+}
+
+.notes-grid .note-meta {
+  margin-top: auto;
+}
+
+/* Responsive adjustments for view toggle */
+@media (max-width: 768px) {
+  .view-toggle {
+    margin-left: 0;
+    justify-content: flex-end;
+    margin-top: var(--space-sm);
+  }
+
+  .notes-grid {
+    grid-template-columns: 1fr;
+  }
+}
 }
