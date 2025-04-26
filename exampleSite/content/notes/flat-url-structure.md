@@ -4,6 +4,7 @@ date: 2025-03-07
 category: "Features"
 growth: "budding"
 favorite: true
+cover: "https://upload.wikimedia.org/wikipedia/en/e/e4/Raayan_poster.jpg"
 --- 
 
 Grdn implements a flat URL structure that makes your notes accessible regardless of their folder location in your content directory.

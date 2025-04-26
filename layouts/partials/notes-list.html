@@ -1,8 +1,12 @@
 <div class="notes-list{{ if .Site.Params.viewToggle.enabled }} notes-container notes-{{ default "list" .Site.Params.viewToggle.defaultView }}{{ end }}">
   {{ range (where .Site.RegularPages "Section" "notes").ByDate.Reverse }}
     <div class="note-item" data-category="{{ .Params.category }}" data-growth="{{ .Params.growth }}">
+      {{ if .Params.cover }}
+        <div class="note-cover">
+          <img src="{{ .Params.cover }}" alt="{{ .Title }} cover">
+        </div>
+      {{ end }}
       <div class="note-title">
-        <h3>
           <a href="{{ .RelPermalink }}">
             {{ if .Site.Params.statusIndicators.enabled }}
               <span class="status-indicators" data-position="{{ default "prefix" .Site.Params.statusIndicators.position }}">
@@ -17,7 +21,6 @@
             {{ end }}
             {{ partial "display-title.html" . }}
           </a>
-        </h3>
       </div>
       {{ if .Params.category }}
         <div class="note-meta">

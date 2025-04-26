@@ -5,8 +5,8 @@
         {{ if .Site.Params.header.logoPath }}
           <img src="{{ .Site.Params.header.logoPath }}" alt="{{ .Site.Title }}" class="site-logo">
         {{ else }}
-          <svg class="site-logo" width="24px" height="24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="var(--border-width)">
-            <path d="M4 12V20C4 20.5523 4.44772 21 5 21H19C19.5523 21 20 20.5523 20 20V12M4 12L12 4M4 12H2M12 4L20 12M12 4V3M20 12H22M7 21V15H17V21" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg class="site-logo" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
           </svg>
         {{ end }}
       {{ end }}
@@ -14,10 +14,23 @@
         <span class="site-title">{{ .Site.Title }}</span>
       {{ end }}
     </a>
-    {{ if and .Site.Params.theme.enabled .Site.Params.theme.showToggle }}
-      {{ if eq .Site.Params.theme.position "header" }}
-        {{ partial "features/theme-toggle.html" (dict "position" "header") }}
-      {{ end }}
-    {{ end }}
+    
+    <div class="header-right">
+      <button class="theme-toggle" aria-label="Toggle theme">
+        <div class="theme-toggle-circle"></div>
+      </button>
+      <div class="menu-dropdown">
+        <button class="menu-button" aria-label="Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18"/>
+          </svg>
+        </button>
+        <div class="menu-content">
+          <a href="/about">About</a>
+          <a href="/tags">Tags</a>
+          <a href="/archive">Archive</a>
+        </div>
+      </div>
+    </div>
   </nav>
 </header>

@@ -1,6 +1,11 @@
 <div class="filter-container">
   <!-- Filter Button -->
-  <button id="filter-toggle" class="filter-button">⌘</button>
+  <button class="filter-button" aria-label="Filter options">
+    <span>Filters</span>
+    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M3 6h18M6 12h12M9 18h6"/>
+    </svg>
+  </button>
 
   <!-- Filter Bar -->
   <div class="filter-bar">
@@ -38,3 +43,30 @@
   <!-- Backdrop -->
   <div class="filter-backdrop"></div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const filterButton = document.querySelector('.filter-button');
+  const filterBar = document.querySelector('.filter-bar');
+  
+  // Toggle filter bar when button is clicked
+  filterButton.addEventListener('click', function(e) {
+    e.stopPropagation(); // Prevent click from bubbling to document
+    filterBar.classList.toggle('active');
+    filterButton.classList.toggle('active');
+  });
+  
+  // Close filter bar when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!filterBar.contains(e.target) && !filterButton.contains(e.target)) {
+      filterBar.classList.remove('active');
+      filterButton.classList.remove('active');
+    }
+  });
+  
+  // Prevent clicks inside filter bar from closing it
+  filterBar.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+});
+</script>

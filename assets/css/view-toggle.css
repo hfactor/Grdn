@@ -1,4 +1,3 @@
-/* Filter bar layout */
 .filter-bar {
   display: flex;
   align-items: center;
@@ -60,27 +59,68 @@
 /* Grid View */
 .notes-container.notes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-md);
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 .notes-container.notes-grid .note-item {
+  display: flex;
+  flex-direction: column;
+  background: var(--t-background-alt);
   border: var(--border-width) solid var(--border);
   border-radius: var(--radius);
-  padding: var(--space-md);
+  overflow: hidden;
+  min-height: 280px;
+}
+
+.notes-container.notes-grid .note-title {
+  position: relative;
+  padding-top: 160px;
+}
+
+.notes-container.notes-grid .note-title::before {
+  content: '';
+  display: block;
+  height: 160px;
   background: var(--t-background-alt);
+  background-image: var(--cover-image);
+  background-size: cover;
+  background-position: center;
 }
 
-.notes-grid .note-item .post-title {
+.notes-container.notes-grid .note-title h3 {
+  margin: 0;
+  padding: var(--space-md);
+  position: relative;
+  z-index: 1;
+}
+
+.notes-container.notes-grid .note-title a {
+  text-decoration: none;
+  color: var(--t-foreground);
   font-size: var(--t-font-regular);
-  font-weight: var(--t-weight-bold);
-  margin-bottom: var(--space-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
-.notes-grid .note-item .post-date {
+/* Category styling */
+.notes-container.notes-grid .note-meta {
   margin-top: auto;
+  padding: var(--space-md);
+}
+
+.notes-container.notes-grid .category {
+  display: inline-block;
   font-size: var(--t-font-tiny);
   color: var(--t-foreground-alt);
+  background: var(--t-background);
+  padding: var(--space-2xs) var(--space-xs);
+  border-radius: 999px;
+  border: 1px solid var(--border);
 }
 
 /* Hover effects */
@@ -110,10 +150,32 @@
   .notes-container.notes-grid {
     grid-template-columns: 1fr;
   }
+
+  .notes-container.notes-grid .note-title::before {
+    height: 200px;
+  }
 }
 
 @media (max-width: 768px) {
   .notes-container.notes-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* List view */
+.notes-container.notes-list .note-cover {
+  display: none !important; /* Force hide in list view */
+}
+
+/* Grid view */
+.notes-container.notes-grid .note-cover {
+  display: block; /* Explicitly show in grid view */
+  height: 160px;
+  overflow: hidden;
+}
+
+.notes-container.notes-grid .note-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 } 

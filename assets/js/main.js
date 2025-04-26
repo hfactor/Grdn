@@ -5,20 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const filterBar = document.querySelector('.filter-bar');
   
   if (filterToggle && filterBar) {
-    const filterBackdrop = document.querySelector('.filter-backdrop');
-    
     filterToggle.addEventListener('click', (e) => {
       e.stopPropagation();
       filterBar.classList.toggle('active');
-      filterBackdrop?.classList.toggle('active');
       document.body.style.overflow = filterBar.classList.contains('active') ? 'hidden' : '';
-    });
-
-    // Close on backdrop click
-    filterBackdrop?.addEventListener('click', () => {
-      filterBar.classList.remove('active');
-      filterBackdrop.classList.remove('active');
-      document.body.style.overflow = '';
     });
   }
 

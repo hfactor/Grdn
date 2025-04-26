@@ -6,43 +6,6 @@
     {{ partial "filter-bar.html" . }}
   {{ end }}
   
-  <div class="notes-container notes-list">
-    {{ range .Pages.GroupByDate "2006" }}
-    <section class="year-section">
-      <h2 class="year-heading">{{ .Key }}</h2>
-      <div class="post-list">
-        {{ range .Pages }}
-        <article class="note-item" data-category="{{ .Params.category }}" data-growth="{{ .Params.growth }}">
-          <div class="note-content">
-            <a href="{{ .RelPermalink }}" class="post-title">{{ .Title }}</a>
-            <time class="post-date">{{ .Date.Format "01/02" }}</time>
-          </div>
-        </article>
-        {{ end }}
-      </div>
-    </section>
-    {{ end }}
-  </div>
+  {{ partial "notes-list.html" . }}
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const viewButtons = document.querySelectorAll('.view-toggle-btn');
-  const notesContainer = document.querySelector('.notes-container');
-  
-  viewButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const view = button.getAttribute('data-view');
-      
-      // Update buttons
-      viewButtons.forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-      
-      // Update container class
-      notesContainer.classList.remove('notes-list', 'notes-grid');
-      notesContainer.classList.add(`notes-${view}`);
-    });
-  });
-});
-</script>
 {{ end }}
