@@ -1,5 +1,9 @@
 {{ $currentPage := . }}
-{{ $backlinkMap := dict }}
+{{ $allBacklinks := slice }}
+{{ $sortBy := .Site.Params.backlinks.sortBy | default "date" }}
+{{ $showContext := .Site.Params.backlinks.showContext | default false }}
+{{ $maxDisplay := .Site.Params.backlinks.maxDisplay | default 10 }}
+{{ $seenLinks := dict }}  <!-- Track seen links to prevent duplicates -->
 
 {{ range where .Site.RegularPages "Section" "notes" }}
   {{ $page := . }}
@@ -8,52 +12,100 @@
     {{ $content := .RawContent }}
     
     <!-- Find all wikilinks including those with display text -->
-    {{ $matches := findRE `\[\[(([^\]\|]*)(?:\|[^\]]*)?)?\]\]` $content -1 }}
+    {{ $matches := findRE `\[\[([^\]]+)\]\]` $content -1 }}
     
     {{ range $matches }}
-      {{ $target := . }}
-      {{ $target = strings.TrimPrefix "[[" $target }}
-      {{ $target = strings.TrimSuffix "]]" $target }}
+      {{ $original := . }}
+      {{ $target := strings.TrimPrefix "[[" (strings.TrimSuffix "]]" .) }}
+      {{ $targetOriginal := $target }}
       
       <!-- Handle display text separator -->
       {{ if strings.Contains $target "|" }}
         {{ $target = index (split $target "|") 0 }}
       {{ end }}
       
-      <!-- Normalize the target -->
+      <!-- Normalize target -->
       {{ $target = lower (trim $target " ") }}
-      {{ $target = replace $target " " "-" }}
       
-      <!-- Store in map only if it matches current page's filename -->
-      {{ if eq $currentPage.File.BaseFileName (lower $target) }}
-        {{ $existing := index $backlinkMap $target | default slice }}
-        {{ if not (in $existing $page) }}
-          {{ $backlinkMap = merge $backlinkMap (dict $target ($existing | append $page)) }}
+      <!-- Check all possible matches -->
+      {{ $isMatch := false }}
+      
+      <!-- Simple direct match -->
+      {{ if eq (lower $currentPage.File.BaseFileName) $target }}
+        {{ $isMatch = true }}
+      {{ end }}
+      
+      <!-- Check with spaces converted to hyphens -->
+      {{ if not $isMatch }}
+        {{ $hyphenatedTarget := replace $target " " "-" }}
+        {{ if eq (lower $currentPage.File.BaseFileName) $hyphenatedTarget }}
+          {{ $isMatch = true }}
         {{ end }}
+      {{ end }}
+      
+      <!-- Check with hyphens converted to spaces -->
+      {{ if not $isMatch }}
+        {{ $spacedTarget := replace $target "-" " " }}
+        {{ if eq (lower $currentPage.File.BaseFileName) $spacedTarget }}
+          {{ $isMatch = true }}
+        {{ end }}
+      {{ end }}
+      
+      <!-- If any match is found and not seen before, add to backlinks -->
+      {{ if and $isMatch (not (index $seenLinks $page.File.Path)) }}
+        {{ $backlinkInfo := dict "page" $page "context" $targetOriginal }}
+        {{ $allBacklinks = $allBacklinks | append $backlinkInfo }}
+        {{ $seenLinks = merge $seenLinks (dict $page.File.Path true) }}
       {{ end }}
     {{ end }}
   {{ end }}
 {{ end }}
 
-<!-- Get current page's normalized name -->
-{{ $currentNormalized := lower .File.BaseFileName }}
-{{ $backlinks := index $backlinkMap $currentNormalized | default slice }}
+<!-- Sort backlinks based on configuration -->
+{{ $sortedBacklinks := $allBacklinks }}
+{{ if eq $sortBy "date" }}
+  {{ $sortedBacklinks = sort $allBacklinks "page.Date" "desc" }}
+{{ else if eq $sortBy "title" }}
+  {{ $sortedBacklinks = sort $allBacklinks "page.Title" }}
+{{ end }}
 
-<!-- Only display the backlinks section if there are backlinks -->
-{{ if $backlinks }}
+<!-- Display backlinks section -->
+{{ if or $sortedBacklinks .Site.Params.backlinks.showEmpty }}
 <div class="backlinks">
   <div class="backlinks-header">
     <h3>Backlinks</h3>
+    {{ if gt (len $sortedBacklinks) $maxDisplay }}
+    <button class="expand-backlinks" aria-label="Show all backlinks">
+      Show All ({{ len $sortedBacklinks }})
+    </button>
+    {{ end }}
   </div>
   
   <div class="backlinks-content">
-    <div class="backlinks-grid">
-    {{ range $backlinks }}
-      <div class="backlink-item">
-        <a href="{{ .RelPermalink }}" class="wikilink">{{ .Title }}</a>
-      </div>
-    {{ end }}
+    {{ if not $sortedBacklinks }}
+    <div class="backlinks-empty">
+      <p>No backlinks found</p>
     </div>
+    {{ else }}
+    <div class="backlinks-grid">
+      {{ range $index, $backlink := $sortedBacklinks }}
+        {{ $page := $backlink.page }}
+        <div class="backlink-item{{ if gt $index $maxDisplay }} hidden{{ end }}">
+          <a href="{{ $page.RelPermalink }}" class="wikilink">
+            <div class="backlink-title">{{ $page.Title }}</div>
+            {{ if $showContext }}
+              <div class="backlink-context">
+                Linked as: [[{{ $backlink.context }}]]
+              </div>
+            {{ end }}
+            {{ if $page.Params.category }}
+            <div class="backlink-category">{{ $page.Params.category }}</div>
+            {{ end }}
+          </a>
+        </div>
+      {{ end }}
+    </div>
+    {{ end }}
   </div>
 </div>
 {{ end }}

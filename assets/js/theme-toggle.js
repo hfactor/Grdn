@@ -22,4 +22,13 @@ function toggleTheme() {
   }, 150);
 }
 
-initializeTheme(); 
+// Initialize theme
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  
+  // Add click handlers to all theme toggle buttons
+  document.querySelectorAll('.theme-toggle').forEach(button => {
+    button.addEventListener('click', toggleTheme);
+  });
+}); 

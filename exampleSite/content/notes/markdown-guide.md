@@ -6,6 +6,8 @@ growth: "evergreen"
 aliases:
   - "Markdown"
   - "Markdown Rendering"
+externalLink: "https://github.com/"  
+
 ---
 
 
@@ -321,3 +323,20 @@ This line is only separated by a single newline, so it's a separate line in the 
 
 This is intended as a quick reference and showcase. 
 Copied from [Simply Jekyll](https://github.com/raghudotcc/simply-jekyll/blob/master/_posts/2020-01-01-test.md).
+
+### Footnotes
+Grdn supports footnotes with automatic back-linking[^1]. You can include multiple footnotes[^2] and they'll be automatically numbered.
+
+[^1]: This is a footnote with a [link to Grdn](https://github.com/hfactor/grdn).
+[^2]: Footnotes can contain **formatted text** and multiple paragraphs.
+
+    Indent paragraphs to include them in the footnote.
+
+You can also have inline footnotes^[Like this one] which are more compact.
+
+When writing technical documentation[^tech], you might want to reference multiple sources[^sources].
+
+[^tech]: See the [Hugo documentation](https://gohugo.io/content-management/footnotes/) for more details about footnote syntax.
+[^sources]: Multiple sources can be cited:
+    * Source 1: [Markdown Guide](https://www.markdownguide.org)
+    * Source 2: [Obsidian Help](https://help.obsidian.md)

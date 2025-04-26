@@ -11,6 +11,31 @@
       </main>
     </div>
     {{ partial "footer.html" . }}
+    {{ if site.Params.hoverPreviews.enabled }}
+      {{ partial "features/hover-preview.html" . }}
+    {{ end }}
     {{ partial "scripts.html" . }}
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuButton = document.querySelector('.menu-button');
+      const menuContent = document.querySelector('.menu-content');
+      
+      menuButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menuContent.classList.toggle('active');
+      });
+      
+      document.addEventListener('click', function(e) {
+        if (!menuContent.contains(e.target) && !menuButton.contains(e.target)) {
+          menuContent.classList.remove('active');
+        }
+      });
+      
+      menuContent.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    });
+    </script>
   </body>
 </html>

@@ -10,44 +10,124 @@ theme = 'Grdn'
 
   # Filter Settings
   [params.filters]
+    # Search Settings
     enableSearch = true      # Enable title search
-    enableCategory = true    # Enable category filter
-    enableGrowth = true     # Enable growth stage filter
-    showCategoryCount = true    # Show note count in category filter
-    showGrowthCount = false     # Show note count in growth stage filter
+    searchPlaceholder = "Search titles.."
     
+    # Category Filter Settings
+    enableCategory = true    # Enable category filter
+    showCategoryCount = true # Show note count in category filter
+    categoryLabel = "All Categories"
+    
+    # Growth Filter Settings
+    enableGrowth = true     # Enable growth stage filter
+    showGrowthCount = false # Show note count in growth stage filter
+    growthLabel = "All Stages"
+    
+    # Real-time Filter Settings
+    debounceTime = 150      # Milliseconds to wait before updating results
+    
+    # URL State Settings
+    persistState = true     # Enable/disable filter state in URL
+    updateHistory = true    # Update browser history with filter changes
+    paramPrefix = "filter_" # Prefix for URL parameters (optional)
+
   # Theme Settings  
   [params.theme]
-    defaultDark = false     # Start in light mode
-    persistChoice = true    # Remember user's theme choice
+    enabled = true           # Controls if theme toggle feature is enabled
+    defaultDark = false     # Sets initial theme
+    persistChoice = true    # Saves user's theme preference
+    showToggle = true      # Controls visibility of toggle button
+    position = "header"     # Position of toggle: "header" or "footer"
 
   # Wikilink Settings
   [params.wikilinks]
+    enabled = true                # Enable/disable wikilink parsing
     brokenLinkTooltip = "Page not found"  # Message for broken links
-    matchFilename = true    # Match by filename instead of title
-    enableAliases = true    # Enable alias matching
+    matchFilename = true         # Match by filename instead of title
+    enableAliases = true         # Enable alias matching
+    titleMatch = false           # Enable title-based matching
+    specialCharHandling = true   # Handle special characters in links
+    caseInsensitive = true       # Case-insensitive matching
+    maxCacheSize = 1000         # Cache size for performance optimization
 
   # Footer Configuration
   [params.footer]
     enabled = true
-    text = "Built with Hugo using the Grdn theme"
+    showOnHome = true        # Show footer on homepage
+    leftText = "Built with <a href=\"https://gohugo.io\">Hugo</a>"     # Left section content
+    rightText = "Using the Grdn theme"  # Right section content
+
+  # Header Configuration
+  [params.header]
+    fixed = true              # Whether header is fixed/sticky
+    showTitle = true          # Show site title
+    showLogo = true          # Show logo
+    logoPath = ""            # Custom logo path (empty for default)
+
+  # Backlinks Configuration
+  [params.backlinks]
+    enabled = true
+    showContext = false           # Show text around the link
+    sortBy = "date"             # "date", "title", or "relevance"
+    maxDisplay = 10             # Number of backlinks to show before "Show More"
+    groupByCategory = false     # Group backlinks by category
+    showEmpty = true           # Show message when no backlinks exist
+
+  # Status Indicator Settings
+  [params.status]
+    showStatusChips = true    # Enable/disable status indicators
+
+  # Status Indicator Settings
+  [params.statusIndicators]
+    enabled = true
+    position = "suffix"
+    showTooltip = true
+
+    [params.statusIndicators.types]
+    favorite = { icon = "✦", tooltip = "Favorite" }
+    reread = { icon = "❷", tooltip = "Re-Read" }
+
+  # Local Title Settings
+  [params.localTitle]
+    enabled = true           # Enable/disable local language titles
+
+  # External Links Settings
+  [params.externalLinks]
+    enabled = true               # Enable external links feature
+    directExternal = true      # true = direct link
+    buttonText = "See More"     # Text for the button
+    indicator = "↗"             # Icon to show next to external links
+    openInNewTab = true         # Open external links in new tab
+
+  # Hover Previews Settings
+  [params.hoverPreviews]
+    enabled = true           # Enable hover previews
+    delay = 300             # Milliseconds before preview appears
+    showMetadata = true     # Show date/category in preview
+    excerptLength = 150     # Characters to show in preview
+
+  [params.viewToggle]
+  enabled = true           # Enable view toggle feature
+  defaultView = "grid"     # Default view mode ("list" or "grid")
+  persistChoice = true     # Remember user's choice across sessions
 
 # Hugo Settings
 [markup]
   [markup.goldmark.renderer]
-    unsafe = true
+    unsafe = true  # Needed for footnote links and HTML
   [markup.goldmark.parser]
     wrapStandAloneImageWithinParagraph = false
-  [markup.goldmark.parser.attribute]
-    block = true
-    title = true
+    [markup.goldmark.parser.attribute]
+      block = true
+      title = true
   [markup.links]
     resolveRelative = true
+  [markup.footnote]
+    returnLinkContents = "↩"  # Symbol for back references
 
 [outputs]
   home = ["HTML", "JSON"]  # JSON needed for search
-
-[taxonomies]
 
 [permalinks]
   notes = "/note/:filename/"

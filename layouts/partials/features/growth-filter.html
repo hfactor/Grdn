@@ -1,0 +1,28 @@
+<div class="growth-filter custom-select" data-filter-type="growth">
+  <div class="select-selected">
+    {{ $.Site.Params.filters.growthLabel | default "All Stages" }}
+    <svg class="dropdown-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M6 9l6 6 6-6"/>
+    </svg>
+  </div>
+  <div class="select-items">
+    <div class="select-item selected" data-value="">
+      <span class="item-label">{{ $.Site.Params.filters.growthLabel | default "All Stages" }}</span>
+    </div>
+    {{ $growthStages := slice }}
+    {{ range where .Site.RegularPages "Section" "notes" }}
+      {{ with .Params.growth }}
+        {{ $growthStages = $growthStages | append . }}
+      {{ end }}
+    {{ end }}
+    {{ range ($growthStages | uniq | sort) }}
+      {{ $count := len (where $.Site.RegularPages "Params.growth" .) }}
+      <div class="select-item" data-value="{{ . }}">
+        <span class="item-label">{{ . }}</span>
+        {{ if $.Site.Params.filters.showGrowthCount }}
+          <span class="item-count">{{ $count }}</span>
+        {{ end }}
+      </div>
+    {{ end }}
+  </div>
+</div> 

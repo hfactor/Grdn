@@ -1,18 +1,23 @@
+{{ if and .Site.Params.footer.enabled (or .Site.Params.footer.showOnHome (not .IsHome)) }}
 <footer>
   <nav class="container">
     <div class="footer-left">
       {{ with .Site.Params.footer.leftText }}
         <p>{{ . | safeHTML }}</p>
-      {{ else }}
-        <p>Built with <a href="https://gohugo.io">Hugo</a></p>
       {{ end }}
     </div>
     <div class="footer-right">
       {{ with .Site.Params.footer.rightText }}
-        <p>{{ . | safeHTML }}</p>
-      {{ else }}
-        <p>Using the Grdn theme</p>
+        <p>
+          {{ . | safeHTML }}
+          {{ if and $.Site.Params.theme.enabled $.Site.Params.theme.showToggle }}
+            {{ if eq $.Site.Params.theme.position "footer" }}
+              {{ partial "features/theme-toggle.html" (dict "position" "footer") }}
+            {{ end }}
+          {{ end }}
+        </p>
       {{ end }}
     </div>
   </nav>
 </footer>
+{{ end }}

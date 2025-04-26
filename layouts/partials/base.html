@@ -1,0 +1,21 @@
+<body>
+  {{ partial "header.html" . }}
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
+  
+  <!-- Add hover preview if enabled -->
+  {{ if site.Params.hoverPreviews.enabled }}
+    {{ partial "features/hover-preview.html" . }}
+  {{ end }}
+  
+  <!-- Scripts -->
+  {{ $scripts := resources.Get "js/main.js" }}
+  {{ if site.Params.hoverPreviews.enabled }}
+    {{ $hoverPreview := resources.Get "js/hover-preview.js" }}
+    {{ $scripts = slice $scripts $hoverPreview | resources.Concat "js/bundle.js" }}
+  {{ end }}
+  {{ $scripts = $scripts | minify | fingerprint }}
+  <script src="{{ $scripts.RelPermalink }}"></script>
+</body> 

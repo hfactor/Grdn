@@ -3,6 +3,7 @@ title: "Thanks List"
 date: 2025-03-01
 category: "Credit"
 growth: "evergreen"
+localTitle: നന്ദി
 ---
 
 ## Thanks List

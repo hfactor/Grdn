@@ -1,67 +1,72 @@
 <div class="filter-container">
-  <button class="filter-toggle" id="filter-toggle">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M3 4.5C3 4.22386 3.22386 4 3.5 4H20.5C20.7761 4 21 4.22386 21 4.5V6.5C21 6.77614 20.7761 7 20.5 7H3.5C3.22386 7 3 6.77614 3 6.5V4.5Z" stroke-linecap="round"/>
-      <path d="M6 11.5C6 11.2239 6.22386 11 6.5 11H17.5C17.7761 11 18 11.2239 18 11.5V13.5C18 13.7761 17.7761 14 17.5 14H6.5C6.22386 14 6 13.7761 6 13.5V11.5Z" stroke-linecap="round"/>
-      <path d="M10 18.5C10 18.2239 10.2239 18 10.5 18H13.5C13.7761 18 14 18.2239 14 18.5V20.5C14 20.7761 13.7761 21 13.5 21H10.5C10.2239 21 10 20.7761 10 20.5V18.5Z" stroke-linecap="round"/>
-    </svg>
+  <!-- Filter Button -->
+  <button class="filter-button" aria-label="Filter options">
     <span>Filters</span>
+    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+      <path d="M3 6h18M6 12h12M9 18h6"/>
+    </svg>
   </button>
 
+  <!-- Filter Bar -->
   <div class="filter-bar">
-    {{ if .Site.Params.filters.enableSearch }}
-    <div class="search-container">
-      <input type="text" id="search-input" placeholder="Search titles..">
-      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="11" cy="11" r="7"/>
-        <path d="M16.5 16.5L21 21" stroke-linecap="round"/>
-      </svg>
-    </div>
-    {{ end }}
-    
-    {{ if .Site.Params.filters.enableCategory }}
-    <div class="category-filter custom-select">
-      <div class="select-selected">All Categories</div>
-      <div class="select-items">
-        <div class="select-item" data-value="">All Categories</div>
-        {{ $categories := slice }}
-        {{ range where .Site.RegularPages "Section" "notes" }}
-          {{ with .Params.category }}
-            {{ $categories = $categories | append . }}
-          {{ end }}
-        {{ end }}
-        {{ range ($categories | uniq | sort) }}
-          {{ $count := len (where $.Site.RegularPages "Params.category" .) }}
-          <div class="select-item" data-value="{{ . }}">
-            {{ . }}
-            {{ if $.Site.Params.filters.showCategoryCount }}
-              <span class="count">{{ $count }}</span>
-            {{ end }}
-          </div>
-        {{ end }}
+    <!-- Search -->
+    <div class="filter-section">
+      <div class="filter-section-title">search</div>
+      <div class="search-wrapper">
+        <input type="text" id="search-input" class="search-input" placeholder="Search titles...">
+        <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="M21 21l-4.35-4.35"/>
+        </svg>
       </div>
     </div>
-    {{ end }}
-    
-    {{ if .Site.Params.filters.enableGrowth }}
-    <div class="growth-filter custom-select">
-      <div class="select-selected">All Stages</div>
-      <div class="select-items">
-        <div class="select-item" data-value="">All Stages</div>
-        {{ $growthStages := slice }}
-        {{ range where .Site.RegularPages "Section" "notes" }}
-          {{ with .Params.growth }}
-            {{ $growthStages = $growthStages | append . }}
-          {{ end }}
-        {{ end }}
-        {{ range ($growthStages | uniq | sort) }}
-          {{ $count := len (where $.Site.RegularPages "Params.growth" .) }}
-          <div class="select-item" data-value="{{ . }}">
-            {{ . }}{{ if $.Site.Params.filters.showGrowthCount }} ({{ $count }}){{ end }}
-          </div>
-        {{ end }}
-      </div>
+
+    <!-- Categories -->
+    <div class="filter-section">
+      <div class="filter-section-title">categories</div>
+      {{ partial "features/category-filter.html" . }}
     </div>
-    {{ end }}
+
+    <!-- Growth Stage -->
+    <div class="filter-section">
+      <div class="filter-section-title">growth stage</div>
+      {{ partial "features/growth-filter.html" . }}
+    </div>
+
+    <!-- View Toggle -->
+    <div class="filter-section">
+      <div class="filter-section-title">view</div>
+      {{ partial "features/view-toggle.html" . }}
+    </div>
   </div>
+
+  <!-- Backdrop -->
+  <div class="filter-backdrop"></div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const filterButton = document.querySelector('.filter-button');
+  const filterBar = document.querySelector('.filter-bar');
+  
+  // Toggle filter bar when button is clicked
+  filterButton.addEventListener('click', function(e) {
+    e.stopPropagation(); // Prevent click from bubbling to document
+    filterBar.classList.toggle('active');
+    filterButton.classList.toggle('active');
+  });
+  
+  // Close filter bar when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!filterBar.contains(e.target) && !filterButton.contains(e.target)) {
+      filterBar.classList.remove('active');
+      filterButton.classList.remove('active');
+    }
+  });
+  
+  // Prevent clicks inside filter bar from closing it
+  filterBar.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+});
+</script>

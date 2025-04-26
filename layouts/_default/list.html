@@ -1,16 +1,11 @@
 {{ define "main" }}
-<div class="notes-container">
-  <div class="notes-header">
-    <h1>{{ .Title }}</h1>
-    {{ .Content }}
-  </div>
-
-  <div class="notes-filters">
+<div class="container">
+  <h1>{{ .Title }}</h1>
+  
+  {{ if .Site.Params.filters.enabled }}
     {{ partial "filter-bar.html" . }}
-  </div>
-
-  <div class="notes-content">
-    {{ partial "notes-list.html" . }}
-  </div>
+  {{ end }}
+  
+  {{ partial "notes-list.html" . }}
 </div>
 {{ end }}

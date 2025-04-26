@@ -3,6 +3,8 @@ title: "Digital Garden"
 date: 2025-03-09
 category: "Documentation"
 growth: "budding"
+cover: "https://upload.wikimedia.org/wikipedia/en/6/63/Vaazhai_poster.jpg"
+external_url: "https://upload.wikimedia.org"
 ---
 
 A digital garden is a collection of notes, thoughts, and ideas that grow and evolve over time. Unlike traditional blogs with chronological posts, digital gardens organize content by topic and connection.
